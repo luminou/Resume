@@ -17,7 +17,7 @@
     <a class="home" href="index.html">← Home</a>
     <div class="actions">
       <a class="btn" href="fr.html" hreflang="fr">Version française</a>
-      <button class="btn primary" type="button" id="pdf-btn">Download as PDF</button>
+      <a class="btn primary" href="CV_Garoche_Clementine_en.pdf" download="CV_Garoche_Clementine_en.pdf">Download as PDF</a>
     </div>
   </nav>
 
@@ -125,8 +125,8 @@
   </div>
 
   <script>
-    // "Telecharger en PDF" : ouvre l'impression du navigateur sur cette page HTML
-    // (choisir "Enregistrer au format PDF"). La page est mise a l'echelle pour tenir sur une feuille A4.
+    // Mise a l'echelle de la page pour qu'elle tienne sur une feuille A4 a l'impression.
+    // Sert aussi au script tools/make-pdf.cjs qui genere les PDF telechargeables.
     (function () {
       var page = document.querySelector(".page");
       var A4W = 794, A4H = 1123;
@@ -142,12 +142,6 @@
       }
       window.addEventListener("beforeprint", fit);
       window.addEventListener("afterprint", unfit);
-      document.getElementById("pdf-btn").addEventListener("click", function () {
-        var t = document.title;
-        document.title = "CV_Garoche_Clementine_en";
-        window.print();
-        setTimeout(function () { document.title = t; }, 1000);
-      });
     })();
   </script>
 
