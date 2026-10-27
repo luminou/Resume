@@ -1,0 +1,216 @@
+/* ===== CV Clémentine Garoche — feuille de style commune ===== */
+:root {
+  --bg: #f4f1ec;
+  --paper: #fffdf9;
+  --ink: #1f2328;
+  --muted: #5d6670;
+  --line: #e2ddd4;
+  --accent: #2f7d6d;
+  --accent-soft: #e3f0ec;
+  --tag-bg: #eef1f3;
+  --radius: 14px;
+  --shadow: 0 10px 40px rgba(31, 35, 40, .08);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14181b;
+    --paper: #1c2226;
+    --ink: #e8eaeb;
+    --muted: #9aa5ad;
+    --line: #2d363c;
+    --accent: #5fc2aa;
+    --accent-soft: #1f3530;
+    --tag-bg: #263036;
+    --shadow: 0 10px 40px rgba(0, 0, 0, .35);
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 16px;
+  padding: 32px 16px 64px;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- Barre du haut (langue + PDF) ---------- */
+.topbar {
+  max-width: 880px;
+  margin: 0 auto 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+.topbar .home { color: var(--muted); }
+.topbar .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 500;
+}
+.btn:hover { border-color: var(--accent); text-decoration: none; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+@media (prefers-color-scheme: dark) { .btn.primary { color: #0f1a17; } }
+
+/* ---------- Page CV ---------- */
+.cv {
+  max-width: 880px;
+  margin: 0 auto;
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 48px 56px;
+}
+
+.cv header {
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 24px;
+  margin-bottom: 28px;
+}
+.cv h1 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 2.4rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.cv .role {
+  font-size: 1.15rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-top: 6px;
+}
+.contact {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin-top: 16px;
+  font-size: 14.5px;
+  color: var(--muted);
+}
+
+section { margin-bottom: 30px; }
+section:last-child { margin-bottom: 0; }
+
+h2 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+.entry { margin-bottom: 18px; }
+.entry:last-child { margin-bottom: 0; }
+.entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 16px;
+  flex-wrap: wrap;
+}
+.entry h3 { font-size: 1.05rem; font-weight: 650; }
+.entry .meta { font-size: 14px; color: var(--muted); white-space: nowrap; }
+.entry .sub { font-size: 14.5px; color: var(--muted); font-style: italic; }
+.entry p { margin-top: 4px; font-size: 15px; }
+
+/* Projets en grille */
+.projects { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.project {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.project.featured { grid-column: 1 / -1; border-color: var(--accent); background: var(--accent-soft); }
+.project h3 { font-size: 1rem; font-weight: 650; }
+.project .sub { font-size: 13.5px; color: var(--muted); font-style: italic; }
+.project p { font-size: 14px; margin-top: 6px; }
+
+/* Logiciels */
+.tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
+.tags li {
+  background: var(--tag-bg);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+
+/* ---------- Page d'accueil (index) ---------- */
+.landing {
+  min-height: calc(100vh - 96px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.landing .card {
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 56px 48px;
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+}
+.landing h1 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.landing .role { color: var(--accent); font-weight: 600; margin: 8px 0 32px; }
+.lang-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.lang-choice a {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 12px;
+  color: var(--ink);
+  transition: border-color .15s, transform .15s;
+}
+.lang-choice a:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
+.lang-choice strong { display: block; font-size: 1.1rem; }
+.lang-choice span { font-size: 13.5px; color: var(--muted); }
+.landing .pdfs { margin-top: 26px; font-size: 14px; color: var(--muted); }
+.landing .links { margin-top: 10px; font-size: 14px; }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 680px) {
+  body { padding: 16px 16px 40px; }
+  .cv { padding: 28px 20px; }
+  .cv h1, .landing h1 { font-size: 1.9rem; }
+  .projects, .two-col, .lang-choice { grid-template-columns: 1fr; }
+  .entry .meta { white-space: normal; }
+  .landing .card { padding: 36px 22px; }
+}
+
+/* ---------- Impression ---------- */
+@media print {
+  :root { --bg: #fff; --paper: #fff; --ink: #000; --muted: #444; --line: #ccc; --accent: #2f7d6d; --accent-soft: #fff; --tag-bg: #f0f0f0; }
+  body { padding: 0; font-size: 12px; }
+  .topbar { display: none; }
+  .cv { box-shadow: none; padding: 0; max-width: none; }
+  .project, .entry { break-inside: avoid; }
+}
