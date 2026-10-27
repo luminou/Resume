@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Clémentine Garoche — CV (FR)</title>
-  <meta name="description" content="CV de Clémentine Garoche, 3D Environment Artist et Technical Artist à Montpellier.">
+  <title>Clémentine Garoche - CV</title>
+  <meta name="description" content="CV de Clémentine Garoche, 3D Environment Artist - Technical Artist, Montpellier.">
+  <link rel="icon" href="assets/mascot.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Roboto:ital,wght@0,400;0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,125 +21,108 @@
     </div>
   </nav>
 
-  <main class="cv">
-    <header>
-      <h1>Clémentine Garoche</h1>
-      <p class="role">3D Environment Artist — Technical Artist</p>
+  <div class="page">
+  <header class="cv-header">
+      <img class="mascot" src="assets/mascot.png" alt="" width="150" height="128">
+      <div class="titles">
+        <h1>Clémentine Garoche</h1>
+        <p class="role">3D Environment Artist - Technical Artist</p>
+      </div>
       <ul class="contact">
-        <li>Montpellier (France)</li>
-        <li><a href="tel:+33647924929">+33 6 47 92 49 29</a></li>
-        <li><a href="mailto:c.garoche@gmail.com">c.garoche@gmail.com</a></li>
-        <li><a href="https://www.artstation.com/clementineg" target="_blank" rel="noopener">artstation.com/clementineg</a></li>
+        <li><img src="assets/ic_pin.png" alt="">Montpellier (France)</li>
+        <li><img src="assets/ic_phone.png" alt=""><a href="tel:+33647924929">+33 6 47 92 49 29</a></li>
+        <li class="mail"><img src="assets/ic_mail.png" alt=""><a href="mailto:c.garoche@gmail.com">c.garoche@gmail.com</a></li>
+        <li><a href="https://www.artstation.com/clementineg" target="_blank" rel="noopener"><img src="assets/ic_artstation.png" alt="ArtStation"></a><a href="https://www.artstation.com/clementineg" target="_blank" rel="noopener">https://www.artstation.com/clementineg</a></li>
+        <li class="langs"><img src="assets/ic_lang.png" alt=""><span>Français natif<br>Anglais C1</span></li>
       </ul>
     </header>
 
-    <section>
-      <h2>Expérience professionnelle</h2>
-      <div class="entry">
-        <div class="entry-head">
-          <h3>Stage VFX — R&amp;D, OLM Digital</h3>
-          <span class="meta">avril 2026 – octobre 2026 (6 mois)</span>
-        </div>
-        <p class="sub">Studio d’animation</p>
-        <p>Création d'un shader procédural de vagues océaniques dans Maya/Arnold pour un pipeline VFX toon-shading Pokémon-like. Langages MEL et Python, Bifrost, BOSS, programmation visuelle. Export en plug-in pour Maya et After Effects.</p>
-      </div>
-    </section>
+    <div class="cv-body">
+      <main class="cv-main">
+        <section class="block">
+          <div class="block-head"><h2>Formation</h2><img src="assets/sec_formation.png" alt=""></div>
+        <p class="line"><span class="o">Bachelor Game Art</span> <span class="sep">-</span> <span class="d">Institut Artline</span> <span class="sep">-</span> <span class="t">2024-2026</span></p>
+        <p class="line"><span class="o">Doctorat en Biologie (Écotoxicologie)</span> <span class="sep">-</span> <span class="d">Université de Rennes</span> <span class="sep">-</span> <span class="t">2014-2017</span></p>
+        </section>
 
-    <section>
-      <h2>Projets académiques et personnels</h2>
-      <div class="projects">
-        <article class="project featured">
-          <h3>Tevarua</h3>
-          <p class="sub">Jeu d’aventure et de réflexion stylisé à la 3<sup>e</sup> personne (UE, en groupe, 10 semaines)</p>
+        <section class="block">
+          <div class="block-head"><h2>Expérience professionnelle</h2><img src="assets/sec_experience.png" alt=""></div>
+          <p class="line"><span class="o">Stage VFX</span> <span class="sep">-</span> <span class="d">R&amp;D, OLM Digital (studio d’animation)</span> <span class="sep">-</span> <span class="t">avril 2026 - octobre 2026 (6 mois)</span></p>
+          <p class="text">Création d'un shader procédural de vagues océaniques dans Maya/Arnold pour un pipeline VFX toon-shading Pokémon-like. Langages MEL et Python, Bifrost, BOSS, programmation visuelle. Export en plug-in pour Maya et After Effects.</p>
+        </section>
+
+        <section class="block">
+          <div class="block-head"><h2>Projets académiques et personnels</h2><img src="assets/sec_projets.png" alt=""></div>
+        <article class="project">
+          <p class="head"><span class="o">Tevarua</span><a class="yt" href="https://youtu.be/8zTURTOZx3E?si=M441N0bFcL-KpsnF" target="_blank" rel="noopener" title="Voir la vidéo : Tevarua" aria-label="Voir la vidéo : Tevarua"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z"/></svg></a> <span class="sep">-</span> <span class="sub">Jeu d’aventure et de réflexion stylisé à la 3<sup>e</sup> personne (UE, en groupe, 10 semaines)</span></p>
           <p>Rôle de technical artist : Master Materials, Blueprints, génération procédurale, modeling/texturing de props, VFX, locomotion des personnages, gestion de versions, rédaction de la documentation.</p>
         </article>
         <article class="project">
-          <h3>The Lighthouse</h3>
-          <p class="sub">Jeu d'exploration environnemental à la 1<sup>re</sup> personne (UE, 5 semaines)</p>
+          <p class="head"><span class="o">The Lighthouse</span><a class="yt" href="https://youtu.be/GFaOy1jlOPs" target="_blank" rel="noopener" title="Voir la vidéo : The Lighthouse" aria-label="Voir la vidéo : The Lighthouse"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z"/></svg></a> <span class="sep">-</span> <span class="sub">Jeu d'exploration environnemental à la 1<sup>re</sup> personne (UE, 5 semaines)</span></p>
           <p>Blueprints, génération procédurale, foliage, VFX, modeling/texturing de props, gestion de versions.</p>
         </article>
         <article class="project">
-          <h3>Curiosity Cabinet</h3>
-          <p class="sub">Scène narrative interactive (UE, 5 semaines)</p>
+          <p class="head"><span class="o">Curiosity Cabinet</span><a class="yt" href="https://youtu.be/Iv_bi0YykhI" target="_blank" rel="noopener" title="Voir la vidéo : Curiosity Cabinet" aria-label="Voir la vidéo : Curiosity Cabinet"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z"/></svg></a> <span class="sep">-</span> <span class="sub">Scène narrative interactive (UE, 5 semaines)</span></p>
           <p>Système d'interaction et d'inspection, modeling/sculpting/texturing de props, génération procédurale, illustrations traditionnelles.</p>
         </article>
         <article class="project">
-          <h3>Underwater Base</h3>
-          <p class="sub">Environnement modulaire (UE, 5 semaines)</p>
+          <p class="head"><span class="o">Underwater Base</span><a class="yt" href="https://youtu.be/14rJKQ5JeNk" target="_blank" rel="noopener" title="Voir la vidéo : Underwater Base" aria-label="Voir la vidéo : Underwater Base"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z"/></svg></a> <span class="sep">-</span> <span class="sub">Environnement modulaire (UE, 5 semaines)</span></p>
           <p>Kits modulaires et trimsheets, modeling/texturing de props, shaders d'eau.</p>
         </article>
         <article class="project">
-          <h3>The Pagoda</h3>
-          <p class="sub">Scène extérieure nocturne stylisée à la 3<sup>e</sup> personne (UE, 5 semaines)</p>
+          <p class="head"><span class="o">The Pagoda</span> <span class="sep">-</span> <span class="sub">Scène extérieure nocturne stylisée à la 3<sup>e</sup> personne (UE, 5 semaines)</span></p>
           <p>Sculpting, retopologie, rigging, skinning et locomotion d'un personnage, modeling/texturing de props.</p>
         </article>
         <article class="project">
-          <h3>Oriental Market</h3>
-          <p class="sub">Scène extérieure thématique (UE, 5 semaines)</p>
+          <p class="head"><span class="o">Oriental Market</span> <span class="sep">-</span> <span class="sub">Scène extérieure thématique (UE, 5 semaines)</span></p>
           <p>Modeling/texturing de props, génération procédurale, simulations physiques, vertex painting, gestion de versions.</p>
         </article>
         <article class="project">
-          <h3>Switchy</h3>
-          <p class="sub">Jeu pixel art à la 3<sup>e</sup> personne (Construct 3, en groupe, 5 semaines)</p>
+          <p class="head"><span class="o">Switchy</span><a class="yt" href="https://youtu.be/M51vszf4RGs" target="_blank" rel="noopener" title="Voir la vidéo : Switchy" aria-label="Voir la vidéo : Switchy"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z"/></svg></a> <span class="sep">-</span> <span class="sub">Jeu pixel art à la 3<sup>e</sup> personne (Construct 3, en groupe, 5 semaines)</span></p>
           <p>Game design, programmation, création et animation de sprites (personnages et props).</p>
         </article>
         <article class="project">
-          <h3>The Rookies</h3>
-          <p class="sub">4 projets de jeu en solo ou en groupe</p>
+          <p class="head"><span class="o">The Rookies</span> <span class="sep">-</span> <span class="sub">4 projets de jeu en solo ou en groupe</span></p>
           <p>Concept art de personnages 2D, modeling/texturing de props, simulations physiques, suivi de briefs.</p>
         </article>
-      </div>
-    </section>
+        </section>
 
-    <section>
-      <h2>Logiciels</h2>
-      <ul class="tags">
-        <li>Unreal Engine 5</li>
-        <li>Blender</li>
-        <li>Maya</li>
-        <li>3ds Max</li>
-        <li>MotionBuilder</li>
-        <li>Substance Painter</li>
-        <li>Substance Designer</li>
-        <li>Houdini</li>
-        <li>SpeedTree</li>
-        <li>Diversion</li>
-        <li>GitHub</li>
-        <li>Python</li>
-      </ul>
-    </section>
+        <section class="block tools">
+          <ul class="software">
+          <li><img src="assets/soft_unreal.png" alt="">Unreal<br>Engine 5 (UE)</li>
+          <li><img src="assets/soft_blender.png" alt="">Blender</li>
+          <li><img src="assets/soft_maya.png" alt="">Maya</li>
+          <li><img src="assets/soft_3dsmax.png" alt="">3dSMax</li>
+          <li><img src="assets/soft_motionbuilder.png" alt="">MotionBuilder</li>
+          <li><img src="assets/soft_painter.png" alt="">Substance<br>Painter</li>
+          <li><img src="assets/soft_designer.png" alt="">Substance<br>Designer</li>
+          <li><img src="assets/soft_houdini.png" alt="">Houdini</li>
+          <li><img src="assets/soft_speedtree.png" alt="">Speedtree</li>
+          <li><img src="assets/soft_diversion.png" alt="">Diversion</li>
+          <li><img src="assets/soft_github.png" alt="">GitHub</li>
+          <li><img src="assets/soft_python.png" alt="">Python</li>
+          </ul>
+        </section>
 
-    <div class="two-col">
-      <section>
-        <h2>Formation</h2>
-        <div class="entry">
-          <div class="entry-head">
-            <h3>Bachelor Game Art</h3>
-            <span class="meta">2024 – 2026</span>
-          </div>
-          <p class="sub">Institut Artline</p>
+        <section class="block">
+          <div class="block-head"><h2>Précédente expérience (chercheuse en biologie)</h2><img src="assets/sec_biologie.png" alt=""></div>
+          <p class="text">Conception de projets de recherche internationaux, développement d'outils et de programmes pour gérer, analyser et visualiser des données (<strong>Python</strong>), programmation de robots, rédaction de protocoles, rapports et publications scientifiques, présentations en conférences internationales.</p>
+        </section>
+      </main>
+
+      <aside class="side">
+        <div class="strip">
+          <img src="assets/side_materials.jpg" alt="Materials" loading="lazy">
+          <img src="assets/side_tevarua.jpg" alt="Tevarua" loading="lazy">
+          <img src="assets/side_lighthouse.jpg" alt="The Lighthouse" loading="lazy">
+          <img src="assets/side_curiosity.jpg" alt="Curiosity Cabinet" loading="lazy">
+          <img src="assets/side_underwater.jpg" alt="Underwater Base" loading="lazy">
+          <img src="assets/side_pagoda.jpg" alt="The Pagoda" loading="lazy">
+          <img src="assets/side_market.jpg" alt="Oriental Market" loading="lazy">
         </div>
-        <div class="entry">
-          <div class="entry-head">
-            <h3>Doctorat en Biologie (Écotoxicologie)</h3>
-            <span class="meta">2014 – 2017</span>
-          </div>
-          <p class="sub">Université de Rennes</p>
-        </div>
-      </section>
-
-      <section>
-        <h2>Langues</h2>
-        <div class="entry"><h3>Français</h3><p class="sub">Natif</p></div>
-        <div class="entry"><h3>Anglais</h3><p class="sub">C1</p></div>
-      </section>
+      </aside>
     </div>
-
-    <section>
-      <h2>Précédente expérience (chercheuse en biologie)</h2>
-      <p>Conception de projets de recherche internationaux, développement d'outils et de programmes pour gérer, analyser et visualiser des données (Python), programmation de robots, rédaction de protocoles, rapports et publications scientifiques, présentations en conférences internationales.</p>
-    </section>
-  </main>
+  </div>
 
 </body>
 </html>
