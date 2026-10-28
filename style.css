@@ -191,6 +191,8 @@ a { color: inherit; }
 .lk img { height: 20px; width: auto; display: block; }
 .lk:hover { transform: scale(1.15); }
 .lk + .yt { margin-left: 6px; }
+.block h2 .lk { margin-left: 12px; vertical-align: 0; }
+.block h2 .lk img { height: 26px; }
 button.btn { font: inherit; font-weight: 700; cursor: pointer; }
 
 /* Logiciels */
