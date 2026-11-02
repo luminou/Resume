@@ -121,15 +121,32 @@
     // Sert aussi au script tools/make-pdf.cjs qui genere les PDF telechargeables.
     (function () {
       var page = document.querySelector(".page");
+      var main = document.querySelector(".cv-main");
       var A4W = 794, A4H = 1123;
+      function setSpace(v) {
+        main.style.setProperty("--extra", v + "px");
+        main.style.setProperty("--pgap", (v * 0.6) + "px");
+      }
       function fit() {
         page.style.zoom = "";
         document.documentElement.classList.add("printing");
-        var z = Math.min(A4W / page.offsetWidth, A4H / page.offsetHeight) * 0.95;
+        // Ajoute de l'espace entre les sections jusqu'a remplir exactement une feuille A4
+        var target = page.offsetWidth * A4H / A4W;
+        var lo = 0, hi = 120;
+        for (var i = 0; i < 18; i++) {
+          var mid = (lo + hi) / 2;
+          setSpace(mid);
+          if (page.offsetHeight <= target) lo = mid; else hi = mid;
+        }
+        setSpace(lo);
+        page.style.minHeight = target + "px";
+        var z = Math.min(A4W / page.offsetWidth, A4H / page.offsetHeight) * 0.995;
         page.style.zoom = z;
       }
       function unfit() {
         page.style.zoom = "";
+        page.style.minHeight = "";
+        setSpace(0);
         document.documentElement.classList.remove("printing");
       }
       window.addEventListener("beforeprint", fit);
