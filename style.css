@@ -190,7 +190,7 @@ a { color: inherit; }
   height: 24px;
   border-radius: 6px;
   background: var(--teal);
-  vertical-align: -4px;
+  vertical-align: 0;
   margin: 0 4px 0 6px;
   transition: background .15s, transform .15s;
 }
