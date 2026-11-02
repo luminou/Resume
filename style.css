@@ -1,4 +1,14 @@
 /* CV Clementine Garoche - style commun (reprend la charte du PDF) */
+/* Polices integrees au site (rendu identique a l'ecran et dans le PDF) */
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-500-italic.woff2") format("woff2"); font-weight: 500; font-style: italic; font-display: block; }
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-700-italic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: block; }
+@font-face { font-family: "Merriweather"; src: url("assets/fonts/merriweather-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Merriweather"; src: url("assets/fonts/merriweather-latin-900-normal.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: block; }
+
 :root {
   --orange: #fa8f51;
   --teal: #65b998;
@@ -135,7 +145,7 @@ a { color: inherit; }
 
 /* ---------- Sections ---------- */
 .block {
-  padding: calc(24px + var(--extra, 0px)) 30px calc(24px + var(--extra, 0px)) 28px;
+  padding: 16px 30px 16px 28px;
   border-bottom: var(--line) solid var(--teal);
   border-radius: 0 0 3px 3px;
   margin: 0 8px 0 12px;
@@ -146,13 +156,13 @@ a { color: inherit; }
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 .block h2 {
   font-family: "Merriweather", Georgia, serif;
   font-weight: 700;
   color: var(--teal);
-  font-size: 2.05rem;
+  font-size: 2.15rem;
   line-height: 1.2;
 }
 .block-head img { height: 52px; width: auto; flex: none; }
@@ -162,15 +172,15 @@ a { color: inherit; }
 .d { color: var(--green); font-weight: 700; font-style: italic; }
 .sep { color: var(--green); }
 
-.line { font-size: 1.15rem; margin: 8px 0 12px; }
-.text { font-size: 1.12rem; text-align: justify; line-height: 1.6; }
+.line { font-size: 1.22rem; margin: 6px 0 8px; }
+.text { font-size: 1.2rem; text-align: justify; line-height: 1.55; }
 
 /* Projets */
-.project { margin: 0 0 calc(18px + var(--pgap, 0px)) 4px; }
+.project { margin: 0 0 14px 4px; }
 .project:last-child { margin-bottom: 4px; }
-.project .head { font-size: 1.12rem; line-height: 1.45; }
+.project .head { font-size: 1.2rem; line-height: 1.4; }
 .project .sub { color: var(--teal); font-style: italic; font-weight: 500; }
-.project p { font-size: 1.1rem; margin-top: 4px; line-height: 1.55; }
+.project p { font-size: 1.18rem; margin-top: 2px; line-height: 1.5; }
 
 .yt {
   display: inline-flex;
@@ -207,8 +217,8 @@ button.btn { font: inherit; font-weight: 700; cursor: pointer; }
   line-height: 1.2;
   color: #222;
 }
-.software img { height: 46px; width: auto; display: block; margin: 0 auto 5px; }
-.block.tools { padding-top: calc(20px + var(--extra, 0px)); padding-bottom: calc(20px + var(--extra, 0px)); }
+.software img { height: 50px; width: auto; display: block; margin: 0 auto 5px; }
+.block.tools { padding-top: 14px; padding-bottom: 14px; }
 
 /* ---------- Page d'accueil ---------- */
 .landing .cv-header { padding: 40px 32px 46px; text-align: center; }
@@ -253,7 +263,16 @@ button.btn { font: inherit; font-weight: 700; cursor: pointer; }
   .contact li { white-space: nowrap; }
   .contact .langs { margin-left: 0; }
 }
-.software li { font-size: 12.5px; white-space: nowrap; flex: 0 0 auto; }
+.software li { font-size: 13.5px; white-space: nowrap; flex: 0 0 auto; }
+
+/* ---------- Format feuille A4 (grand ecran et PDF) ---------- */
+@media print, screen and (min-width: 1101px) {
+  .page.sheet { height: 1697px; display: flex; flex-direction: column; }
+  .page.sheet .cv-body { flex: 1 1 auto; min-height: 0; }
+  .page.sheet .cv-main { display: flex; flex-direction: column; padding: 0; }
+  .page.sheet .block { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
+  .page.sheet .block.tools { flex-grow: 0.35; }
+}
 
 /* ---------- Ecrans moyens ---------- */
 @media screen and (max-width: 1080px) {
@@ -294,8 +313,9 @@ button.btn { font: inherit; font-weight: 700; cursor: pointer; }
 @page { size: A4; margin: 0; }
 @media print {
   html, body { background: var(--cream); }
-  body { padding: 0; }
+  body { padding: 0; margin: 0; }
   .topbar { display: none; }
-  .page { box-shadow: none; width: 1200px; max-width: none; margin: 0 auto; }
+  /* Feuille 1200 x 1697 px reduite pour tenir dans l'A4 avec une marge de securite tout autour */
+  .page.sheet { box-shadow: none; width: 1200px; max-width: none; zoom: 0.62; margin: 56px auto 0; }
   .yt:hover, .lk:hover { transform: none; }
 }
