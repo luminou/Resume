@@ -515,6 +515,7 @@ h1 {
 
     vid.classList.add("fade");
     anim.classList.add("fade");
+    animTemp = false;
     try { vid.pause(); } catch (e) {}
     resetBars();
     clearTimeout(timer);
@@ -531,16 +532,24 @@ h1 {
     vid.src = base + p.id + ".mp4";
     vid.load();
     var pr = vid.play();
-    if (pr && pr.catch) pr.catch(function (err) { if (!err || err.name !== "AbortError") toAnim(); });
-    // Safari / iPhone : si la video n'a pas vraiment demarre apres 2,5 s,
-    // on passe a la meme animation en image animee (WebP), que tous les navigateurs lisent.
-    check = setTimeout(function () {
-      if (vid.paused || vid.readyState < 2 || vid.currentTime < 0.05) toAnim();
-    }, 2500);
+    // Refus explicite du navigateur : on passe pour de bon aux images animees.
+    if (pr && pr.catch) pr.catch(function (err) { if (err && err.name === "NotAllowedError") toAnim(); });
+    var t0 = Date.now();
+    (function watch() {
+      check = setTimeout(function () {
+        if (isPlaying()) return;
+        // Video prete mais figee (cas de Safari), ou toujours rien apres 15 s : image animee.
+        if (vid.readyState >= 2 && Date.now() - t0 > 4000) { toAnim(); return; }
+        if (Date.now() - t0 > 15000) { toAnim(); return; }
+        watch();                                         // encore en chargement : on attend
+      }, 1000);
+    })();
   }
 
+  function isPlaying() { return !vid.paused && vid.readyState >= 2 && vid.currentTime > 0.05; }
+
   // Secours image animee
-  var anim = $("anim"), useAnim = false, check = null;
+  var anim = $("anim"), useAnim = false, check = null, animTemp = false;
   var DUR = { shoreline: 12, tevarua: 8, lighthouse: 12, curiosity: 8.5, underwater: 9, pagoda: 8.6, market: 5.9, materials: 10 };
   function toAnim() {
     clearTimeout(check);
@@ -548,14 +557,16 @@ h1 {
     useAnim = true;
     try { vid.pause(); } catch (e) {}
     vid.removeAttribute("src");
-    showAnim(P[cur]);
+    showAnim(P[cur], false);
   }
-  function showAnim(p) {
+  function showAnim(p, temp) {
+    animTemp = !!temp;
     var t0 = Date.now(), d = (DUR[p.id] || 9) * 1000;
     anim.onload = function () { anim.onload = null; anim.classList.remove("fade"); };
     anim.src = base + p.id + "_a.webp";
     clearTimeout(timer);
     (function tick() {
+      if (animTemp && isPlaying()) return;           // la video a pris le relais
       var b = bar(), el = Date.now() - t0;
       if (b) b.style.width = Math.min(100, 100 * el / d) + "%";
       if (el >= d && !paused) { go((cur + 1) % P.length, false); return; }
@@ -563,10 +574,20 @@ h1 {
     })();
   }
 
-  vid.addEventListener("playing", function () { clearTimeout(check); if (!useAnim) vid.classList.remove("fade"); });
+  vid.addEventListener("playing", function () {
+    clearTimeout(check);
+    if (useAnim) return;
+    vid.classList.remove("fade");
+    if (animTemp) {                                    // la video arrive : on retire l'image animee
+      animTemp = false;
+      clearTimeout(timer);
+      anim.classList.add("fade");
+      try { vid.currentTime = 0; } catch (e) {}
+    }
+  });
   vid.addEventListener("timeupdate", function () {
     var b = bar();
-    if (!useAnim && b && vid.duration) b.style.width = (100 * vid.currentTime / vid.duration) + "%";
+    if (!useAnim && !animTemp && b && vid.duration) b.style.width = (100 * vid.currentTime / vid.duration) + "%";
   });
   vid.addEventListener("ended", function () {
     if (useAnim) return;
