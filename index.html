@@ -269,6 +269,8 @@ h1 {
 .act svg { width: 14px; height: 14px; fill: currentColor; }
 .act.ghost { background: rgba(255, 253, 242, .14); }
 .act.ghost:hover { background: var(--orange); }
+/* Shoreline (fond blanc) : voile vert profond, presque opaque, au lieu du noir transparent qui virait au gris */
+.cap.light { padding-top: clamp(90px, 18vh, 200px); background: linear-gradient(180deg, rgba(10, 44, 36, 0), rgba(10, 44, 36, .3) 25%, rgba(10, 44, 36, .62) 50%, rgba(9, 38, 31, .8) 75%, rgba(8, 34, 28, .86)); }
 
 .strip-wrap { min-width: 0; display: grid; gap: 8px; }
 .strip-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
@@ -414,7 +416,7 @@ h1 {
 (function () {
   var AS = "https://www.artstation.com/artwork/";
   var P = [
-    { id: "shoreline", name: "Shoreline Shader", pos: "50% 50%",
+    { id: "shoreline", name: "Shoreline Shader", pos: "50% 50%", light: true,
       sub: { fr: "Stage VFX, R&D, OLM Digital (studio d’animation)", en: "VFX Internship, R&D, OLM Digital (animation studio)" },
       desc: { fr: "Création d'un shader procédural de vagues océaniques dans Maya/Arnold pour un pipeline VFX toon-shading Pokémon-like.",
               en: "Built a procedural, stylized ocean wave shader in Maya/Arnold for a toon-shaded VFX pipeline, Pokémon-like." },
@@ -493,6 +495,7 @@ h1 {
   function render() {
     var p = P[cur];
     $("p-name").textContent = nm(p);
+    document.querySelector(".cap").classList.toggle("light", !!p.light);
     $("p-sub").textContent = p.sub[lang];
     $("p-desc").textContent = p.desc[lang];
     $("p-acts").innerHTML = p.links.map(function (l, j) {
