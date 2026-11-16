@@ -530,6 +530,7 @@ h1 {
     [vid, anim, $("img-" + front)].forEach(function (el) { place(el, p); });
   });
 
+  var lastFit = "cover";
   function swap() {
     var p = P[cur];
     var fit = p.fit || "cover";
@@ -538,6 +539,11 @@ h1 {
     var room = "0";
     nImg.style.objectPosition = p.pos;
     place(nImg, p);
+    // quand on passe d'un cadrage plein ecran a la grille (ou l'inverse), pas de fondu entre les
+    // deux images : le melange d'une image pleine et d'une grille plus petite donnait un effet de zoom.
+    var cut = fit !== lastFit;
+    lastFit = fit;
+    if (cut) { fImg.style.transition = "none"; fImg.classList.add("fade"); void fImg.offsetWidth; fImg.style.transition = ""; }
     nImg.onload = function () {
       nImg.onload = null;
       nImg.classList.remove("fade");
