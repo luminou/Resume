@@ -616,6 +616,24 @@ h1 {
 
   setLang(lang);
   go(0, false);
+
+  // Diagnostic (adresse avec ?debug=1) : affiche l'etat de la video en bas de l'ecran
+  if (/[?&]debug=1/.test(location.search)) {
+    var dbg = document.createElement("pre");
+    dbg.style.cssText = "position:fixed;left:8px;right:8px;bottom:8px;z-index:99;margin:0;padding:8px;font:12px/1.4 monospace;background:rgba(0,0,0,.8);color:#fff;border-radius:8px;white-space:pre-wrap";
+    document.body.appendChild(dbg);
+    var evs = [];
+    ["loadstart","loadedmetadata","canplay","playing","pause","waiting","stalled","error","ended"].forEach(function (n) {
+      vid.addEventListener(n, function () { evs.push(n); if (evs.length > 8) evs.shift(); });
+    });
+    setInterval(function () {
+      dbg.textContent = "v3 | projet " + P[cur].id + " | modeImage=" + useAnim +
+        "\nvideo: paused=" + vid.paused + " ready=" + vid.readyState + " t=" + vid.currentTime.toFixed(2) +
+        " err=" + (vid.error ? vid.error.code : "-") + "\nevents: " + evs.join(" ") +
+        "\nimage: " + (anim.getAttribute("src") || "-") + " charg\u00e9e=" + (anim.complete && anim.naturalWidth > 0) +
+        " visible=" + !anim.classList.contains("fade") + "\n" + navigator.userAgent;
+    }, 500);
+  }
 })();
 </script>
 
