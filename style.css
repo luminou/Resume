@@ -297,7 +297,8 @@ button.btn { font: inherit; font-weight: 700; cursor: pointer; }
   .side { order: 2; }
   .side .strip { position: static; display: grid; grid-template-columns: repeat(12, 1fr); }
   .side img, .side img:first-child { aspect-ratio: 1; height: auto; grid-column: span 3; }
-  .side img:nth-child(n+5) { grid-column: span 4; }
+  /* petites vignettes en haut, Lighthouse, Curiosity et Underwater en grand sur la derniere ligne */
+  .side img:nth-child(3), .side img:nth-child(4), .side img:nth-child(5) { grid-column: span 4; order: 2; }
   .block { padding: 14px 16px; margin: 0 8px; }
   .block h2 { font-size: 1.45rem; }
   .block-head img { height: 38px; }
