@@ -390,6 +390,7 @@ h1 {
       <img id="img-a" src="assets/landing/shoreline.jpg" alt="">
       <img id="img-b" class="fade" src="assets/landing/shoreline.jpg" alt="">
       <video id="vid" class="fade" muted autoplay playsinline webkit-playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
+      <video id="vidg" class="fade" muted autoplay playsinline webkit-playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
       <img id="anim" class="fade" alt="">
       <figcaption class="cap">
         <h2 id="p-name">Shoreline Shader</h2>
@@ -476,7 +477,7 @@ h1 {
   var reduce = false;
   var cur = 0, timer = null, paused = false, front = "a";
   var $ = function (id) { return document.getElementById(id); };
-  var strip = $("strip"), vid = $("vid"), show = $("show");
+  var strip = $("strip"), vidC = $("vid"), vidG = $("vidg"), vid = vidC, show = $("show");
   var base = "assets/landing/";
 
   function nm(p) { return typeof p.name === "string" ? p.name : p.name[lang]; }
@@ -527,8 +528,14 @@ h1 {
   }
   addEventListener("resize", function () {
     var p = P[cur];
-    [vid, anim, $("img-" + front)].forEach(function (el) { place(el, p); });
+    [anim, $("img-" + front)].forEach(function (el) { place(el, p); });
+    placeGrid();
   });
+  // Deux lecteurs video distincts : un plein cadre, un pour la grille des materiaux.
+  // Leur cadrage ne change jamais d'un projet a l'autre (Safari mettait plusieurs images
+  // a appliquer un nouveau cadrage, d'ou l'effet de zoom/decalage sur telephone).
+  function placeGrid() { var g = P.filter(function (q) { return q.fit === "contain"; })[0]; if (g) place(vidG, g); }
+  placeGrid();
 
   var lastFit = "cover";
   function swap() {
@@ -554,17 +561,20 @@ h1 {
     if (nImg.complete && nImg.onload) nImg.onload();
 
     // on cache instantanement l'ancienne video / image animee (sans fondu), avant de changer leur cadrage
-    [vid, anim].forEach(function (el) { el.style.transition = "none"; el.classList.add("fade"); void el.offsetWidth; el.style.transition = ""; });
+    [vidC, vidG, anim].forEach(function (el) { el.style.transition = "none"; el.classList.add("fade"); void el.offsetWidth; el.style.transition = ""; });
     animTemp = false;
-    try { vid.pause(); } catch (e) {}
+    [vidC, vidG].forEach(function (v) { try { v.pause(); } catch (e) {} });
+    var other = fit === "contain" ? vidC : vidG;
+    vid = fit === "contain" ? vidG : vidC;
+    if (vid === vidG) placeGrid();
+    if (other.getAttribute("src")) { other.removeAttribute("src"); try { other.load(); } catch (e) {} }
     resetBars();
     clearTimeout(timer);
     clearTimeout(check);
     if (reduce) return;
-    [vid, anim].forEach(function (el) {
-      el.style.objectPosition = p.pos;
-      place(el, p);
-    });
+    anim.style.objectPosition = p.pos;
+    place(anim, p);
+    if (vid === vidC) vidC.style.objectPosition = p.pos;
     if (useAnim) { showAnim(p); return; }
     vid.muted = true;
     vid.defaultMuted = true;
@@ -597,8 +607,7 @@ h1 {
     clearTimeout(check);
     if (useAnim) return;
     useAnim = true;
-    try { vid.pause(); } catch (e) {}
-    vid.removeAttribute("src");
+    [vidC, vidG].forEach(function (v) { try { v.pause(); } catch (e) {} v.removeAttribute("src"); });
     showAnim(P[cur], false);
   }
   function showAnim(p, temp) {
@@ -621,13 +630,13 @@ h1 {
   function revealVideo() {
     var src = vid.currentSrc;
     function show() { if (vid.currentSrc === src && !useAnim) vid.classList.remove("fade"); }
-    if (vid.requestVideoFrameCallback) vid.requestVideoFrameCallback(function () { show(); });
+    if (vid.requestVideoFrameCallback) vid.requestVideoFrameCallback(function () { vid.requestVideoFrameCallback(function () { show(); }); });
     else {
       var on = function () { if (vid.currentTime > 0.04) { vid.removeEventListener("timeupdate", on); show(); } };
       vid.addEventListener("timeupdate", on);
     }
   }
-  vid.addEventListener("playing", function () {
+  [vidC, vidG].forEach(function (v) { v.addEventListener("playing", function () { if (this !== vid) return;
     clearTimeout(check);
     if (useAnim) return;
     revealVideo();
@@ -637,17 +646,17 @@ h1 {
       anim.classList.add("fade");
       try { vid.currentTime = 0; } catch (e) {}
     }
-  });
-  vid.addEventListener("timeupdate", function () {
+  }); });
+  [vidC, vidG].forEach(function (v) { v.addEventListener("timeupdate", function () { if (this !== vid) return;
     var b = bar();
     if (!useAnim && !animTemp && b && vid.duration) b.style.width = (100 * vid.currentTime / vid.duration) + "%";
-  });
-  vid.addEventListener("ended", function () {
+  }); });
+  [vidC, vidG].forEach(function (v) { v.addEventListener("ended", function () { if (this !== vid) return;
     if (useAnim) return;
     if (paused) { vid.currentTime = 0; vid.play().catch(function () {}); }
     else go((cur + 1) % P.length, false);
-  });
-  vid.addEventListener("error", function () { if (vid.getAttribute("src")) toAnim(); });
+  }); });
+  [vidC, vidG].forEach(function (v) { v.addEventListener("error", function () { if (this === vid && vid.getAttribute("src")) toAnim(); }); });
 
   function go(i, user) {
     cur = i;
