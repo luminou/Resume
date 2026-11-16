@@ -377,7 +377,7 @@ h1 {
       <img id="img-a" src="assets/landing/shoreline.jpg" alt="">
       <img id="img-b" class="fade" src="assets/landing/shoreline.jpg" alt="">
       <video id="vid" class="fade" muted autoplay playsinline webkit-playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
-      <button class="play" type="button" id="play" hidden aria-label="Lire la vidéo"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1.5 L8.5 5 L3 8.5 Z"/></svg></button>
+      <img id="anim" class="fade" alt="">
       <figcaption class="cap">
         <h2 id="p-name">Shoreline Shader</h2>
         <p class="sub" id="p-sub"></p>
@@ -404,7 +404,7 @@ h1 {
       sub: { fr: "Stage VFX, R&D, OLM Digital (studio d’animation)", en: "VFX Internship, R&D, OLM Digital (animation studio)" },
       desc: { fr: "Création d'un shader procédural de vagues océaniques dans Maya/Arnold pour un pipeline VFX toon-shading Pokémon-like.",
               en: "Built a procedural, stylized ocean wave shader in Maya/Arnold for a toon-shaded VFX pipeline, Pokémon-like." },
-      links: [{ k: "page", u: "https://luminou.github.io/Shoreline_Shader/portfolio.html" }, { k: "explain", u: "https://luminou.github.io/Shoreline_Shader/shorelineshadersummary.html" }] },
+      links: [{ k: "page", u: "https://luminou.github.io/Shoreline_Shader/portfolio.html" }, { k: "explain", u: "https://luminou.github.io/Shoreline_Shader/shorelineshadersummary.html#jouer" }] },
     { id: "tevarua", name: "Tevarua", pos: "50% 35%",
       sub: { fr: "Jeu d’aventure et de réflexion stylisé à la 3e personne (UE, en groupe, 10 semaines)", en: "Stylized third-person puzzle-adventure game (UE, 10-week group project)" },
       desc: { fr: "Rôle de technical artist : Master Materials, Blueprints, génération procédurale, modeling/texturing de props, VFX, locomotion des personnages, gestion de versions, rédaction de la documentation.",
@@ -445,7 +445,7 @@ h1 {
     as: { fr: "Voir sur ArtStation", en: "View on ArtStation" },
     yt: { fr: "Vidéo complète", en: "Full video" },
     page: { fr: "Voir le portfolio", en: "View the portfolio" },
-    explain: { fr: "Explication interactive", en: "Interactive explainer" },
+    explain: { fr: "Jouer avec la vague", en: "Play with the wave" },
     copied: { fr: "Copié", en: "Copied" }
   };
   var ICON = {
@@ -459,7 +459,6 @@ h1 {
   try { lang = localStorage.getItem("cg-lang") || ((navigator.language || "fr").slice(0, 2) === "fr" ? "fr" : "en"); } catch (e) {}
 
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var FALLBACK = 9000;
   var cur = 0, timer = null, paused = false, front = "a";
   var $ = function (id) { return document.getElementById(id); };
   var strip = $("strip"), vid = $("vid"), show = $("show");
@@ -513,59 +512,66 @@ h1 {
     if (nImg.complete && nImg.onload) nImg.onload();
 
     vid.classList.add("fade");
+    anim.classList.add("fade");
     try { vid.pause(); } catch (e) {}
     resetBars();
     clearTimeout(timer);
+    clearTimeout(check);
     if (reduce) return;
-    vid.style.objectPosition = p.pos;
-    vid.style.objectFit = fit;
-    vid.style.height = room === "0" ? "100%" : "calc(100% - " + room + ")";
+    [vid, anim].forEach(function (el) {
+      el.style.objectPosition = p.pos;
+      el.style.objectFit = fit;
+      el.style.height = room === "0" ? "100%" : "calc(100% - " + room + ")";
+    });
+    if (useAnim) { showAnim(p); return; }
     vid.muted = true;
     vid.defaultMuted = true;
     vid.src = base + p.id + ".mp4";
     vid.load();
-    tryPlay();
+    var pr = vid.play();
+    if (pr && pr.catch) pr.catch(function (err) { if (!err || err.name !== "AbortError") toAnim(); });
+    // Safari / iPhone : si la video n'a pas vraiment demarre apres 2,5 s,
+    // on passe a la meme animation en image animee (WebP), que tous les navigateurs lisent.
+    check = setTimeout(function () {
+      if (vid.paused || vid.readyState < 2 || vid.currentTime < 0.05) toAnim();
+    }, 2500);
   }
 
-  // Sur mobile, la lecture automatique peut etre refusee (navigateur integre a une appli,
-  // economie d'energie...). Dans ce cas un bouton lecture apparait ; apres un premier toucher,
-  // le navigateur autorise la suite des videos.
-  var blocked = false;
-  function tryPlay() {
-    var pr = vid.play();
-    if (pr && pr.catch) pr.catch(function (err) {
-      if (err && err.name === "AbortError") return;
-      blocked = true;
-      $("play").hidden = false;
-      fallback();
-    });
+  // Secours image animee
+  var anim = $("anim"), useAnim = false, check = null;
+  var DUR = { shoreline: 12, tevarua: 8, lighthouse: 12, curiosity: 8.5, underwater: 9, pagoda: 8.6, market: 5.9, materials: 10 };
+  function toAnim() {
+    clearTimeout(check);
+    if (useAnim) return;
+    useAnim = true;
+    try { vid.pause(); } catch (e) {}
+    vid.removeAttribute("src");
+    showAnim(P[cur]);
   }
-  function unlock() {
-    if (!blocked) return;
-    blocked = false;
-    $("play").hidden = true;
-    vid.muted = true;
-    var pr = vid.play();
-    if (pr && pr.then) pr.then(function () { clearTimeout(timer); }, function () {});
+  function showAnim(p) {
+    var t0 = Date.now(), d = (DUR[p.id] || 9) * 1000;
+    anim.onload = function () { anim.onload = null; anim.classList.remove("fade"); };
+    anim.src = base + p.id + "_a.webp";
+    clearTimeout(timer);
+    (function tick() {
+      var b = bar(), el = Date.now() - t0;
+      if (b) b.style.width = Math.min(100, 100 * el / d) + "%";
+      if (el >= d && !paused) { go((cur + 1) % P.length, false); return; }
+      timer = setTimeout(tick, 200);
+    })();
   }
-  $("play").addEventListener("click", function (e) { e.stopPropagation(); unlock(); });
-  ["touchend", "click"].forEach(function (ev) { document.addEventListener(ev, unlock, { passive: true }); });
-  vid.addEventListener("playing", function () { vid.classList.remove("fade"); $("play").hidden = true; blocked = false; });
+
+  vid.addEventListener("playing", function () { clearTimeout(check); if (!useAnim) vid.classList.remove("fade"); });
   vid.addEventListener("timeupdate", function () {
     var b = bar();
-    if (b && vid.duration) b.style.width = (100 * vid.currentTime / vid.duration) + "%";
+    if (!useAnim && b && vid.duration) b.style.width = (100 * vid.currentTime / vid.duration) + "%";
   });
   vid.addEventListener("ended", function () {
+    if (useAnim) return;
     if (paused) { vid.currentTime = 0; vid.play().catch(function () {}); }
     else go((cur + 1) % P.length, false);
   });
-  vid.addEventListener("error", function () { fallback(); });
-
-  function fallback() {
-    clearTimeout(timer);
-    if (reduce) return;
-    timer = setTimeout(function () { if (!paused) go((cur + 1) % P.length, false); }, FALLBACK);
-  }
+  vid.addEventListener("error", function () { if (vid.getAttribute("src")) toAnim(); });
 
   function go(i, user) {
     cur = i;
@@ -574,8 +580,12 @@ h1 {
     if (user) $("t-" + P[i].id).focus({ preventScroll: true });
   }
 
-  show.addEventListener("mouseenter", function () { paused = true; });
-  show.addEventListener("mouseleave", function () { paused = false; });
+  // pause au survol, seulement avec une souris (sur ecran tactile, toucher ne doit pas bloquer la vitrine)
+  var lastTouch = 0;
+  addEventListener("touchstart", function () { lastTouch = Date.now(); paused = false; }, { passive: true, capture: true });
+  function isMouse(e) { return e.pointerType === "mouse" && Date.now() - lastTouch > 1500; }
+  show.addEventListener("pointerenter", function (e) { if (isMouse(e)) paused = true; });
+  show.addEventListener("pointerleave", function (e) { if (isMouse(e)) paused = false; });
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "ArrowRight") go((cur + 1) % P.length, true);
