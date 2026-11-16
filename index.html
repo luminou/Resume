@@ -508,6 +508,28 @@ h1 {
   function bar() { return document.querySelector('.thumb[aria-pressed="true"] .bar'); }
   function resetBars() { document.querySelectorAll(".thumb .bar").forEach(function (x) { x.style.width = "0"; }); }
 
+  // Cadrage. Pour les projets "contain" (grille des materiaux), on calcule nous-memes la taille
+  // et la position de l'image/video : Safari applique mal object-fit:contain aux premieres images d'une video.
+  var AR = { materials: 1292 / 644 };
+  function place(el, p) {
+    if ((p.fit || "cover") === "contain" && AR[p.id]) {
+      var st = $("stage"), W = st.clientWidth, H = st.clientHeight, ar = AR[p.id], w, h;
+      if (W / H > ar) { h = H; w = H * ar; } else { w = W; h = W / ar; }
+      el.style.objectFit = "fill";
+      el.style.width = w + "px"; el.style.height = h + "px";
+      el.style.left = ((W - w) / 2) + "px"; el.style.top = ((H - h) * 0.25) + "px";
+      el.style.right = "auto"; el.style.bottom = "auto";
+    } else {
+      el.style.objectFit = "cover";
+      el.style.width = "100%"; el.style.height = "100%";
+      el.style.left = "0"; el.style.top = "0"; el.style.right = ""; el.style.bottom = "";
+    }
+  }
+  addEventListener("resize", function () {
+    var p = P[cur];
+    [vid, anim, $("img-" + front)].forEach(function (el) { place(el, p); });
+  });
+
   function swap() {
     var p = P[cur];
     var fit = p.fit || "cover";
@@ -515,8 +537,7 @@ h1 {
     var nImg = $("img-" + next), fImg = $("img-" + front);
     var room = "0";
     nImg.style.objectPosition = p.pos;
-    nImg.style.objectFit = fit;
-    nImg.style.height = room === "0" ? "100%" : "calc(100% - " + room + ")";
+    place(nImg, p);
     nImg.onload = function () {
       nImg.onload = null;
       nImg.classList.remove("fade");
@@ -536,12 +557,14 @@ h1 {
     if (reduce) return;
     [vid, anim].forEach(function (el) {
       el.style.objectPosition = p.pos;
-      el.style.objectFit = fit;
-      el.style.height = room === "0" ? "100%" : "calc(100% - " + room + ")";
+      place(el, p);
     });
     if (useAnim) { showAnim(p); return; }
     vid.muted = true;
     vid.defaultMuted = true;
+    // on vide d'abord la video (Safari garde sinon la derniere image du projet precedent)
+    vid.removeAttribute("src");
+    try { vid.load(); } catch (e) {}
     vid.src = base + p.id + ".mp4";
     vid.load();
     var pr = vid.play();
@@ -587,10 +610,21 @@ h1 {
     })();
   }
 
+  // Ne montrer la video qu'une fois sa premiere image vraiment affichee (Safari annonce
+  // "playing" avant d'avoir peint l'image, ce qui laissait voir un instant l'ancienne).
+  function revealVideo() {
+    var src = vid.currentSrc;
+    function show() { if (vid.currentSrc === src && !useAnim) vid.classList.remove("fade"); }
+    if (vid.requestVideoFrameCallback) vid.requestVideoFrameCallback(function () { show(); });
+    else {
+      var on = function () { if (vid.currentTime > 0.04) { vid.removeEventListener("timeupdate", on); show(); } };
+      vid.addEventListener("timeupdate", on);
+    }
+  }
   vid.addEventListener("playing", function () {
     clearTimeout(check);
     if (useAnim) return;
-    vid.classList.remove("fade");
+    revealVideo();
     if (animTemp) {                                    // la video arrive : on retire l'image animee
       animTemp = false;
       clearTimeout(timer);
