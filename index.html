@@ -1,44 +1,611 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Clémentine Garoche - CV / Resume</title>
-  <meta name="description" content="Clémentine Garoche, 3D Environment Artist - Technical Artist. CV en français / Resume in English.">
-  <link rel="icon" href="assets/mascot.png">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clémentine Garoche Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="assets/mascot.png">
+<style>
+/* Mise en page : panneau identite (photo sombre, comme le bandeau du CV) a gauche,
+   vitrine de projets interactive a droite. Tout tient dans un ecran, sans defilement. */
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-500-italic.woff2") format("woff2"); font-weight: 500; font-style: italic; font-display: swap; }
+@font-face { font-family: "Merriweather"; src: url("assets/fonts/merriweather-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Merriweather"; src: url("assets/fonts/merriweather-latin-900-normal.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: swap; }
+
+:root {
+  --orange: #fa8f51;
+  --teal: #65b998;
+  --deep: #174b36;
+  --bg: #fffdf2;
+  --fg: #174b36;
+  --muted: #4f6f60;
+  --line: #dfe7dc;
+  --chip: #eef5ee;
+  --shade: rgba(9, 20, 15, .72);
+  --on-photo: #fffdf2;
+  --display: "Merriweather", Georgia, "Times New Roman", serif;
+  --body: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111a15; --fg: #e6eee7; --muted: #9fb5a8; --line: #26362d; --chip: #1b2a22;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111a15; --fg: #e6eee7; --muted: #9fb5a8; --line: #26362d; --chip: #1b2a22;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+
+.app {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(300px, 34%) minmax(0, 1fr);
+}
+
+/* ---------- Panneau identite ---------- */
+.id {
+  position: relative;
+  color: var(--on-photo);
+  background:
+    linear-gradient(180deg, rgba(8, 16, 12, .55), rgba(8, 16, 12, .82)),
+    url("assets/header_bg.jpg") 30% center / cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(12px, 2.4vh, 24px);
+  padding-block: clamp(14px, 3.6vh, 44px);
+  padding-left: max(clamp(20px, 3vw, 48px), env(safe-area-inset-left, 0px));
+  padding-right: clamp(20px, 3vw, 48px);
+  min-height: 0;
+}
+.lang {
+  display: inline-flex;
+  align-self: flex-start;
+  border: 1.5px solid rgba(255, 253, 242, .35);
+  border-radius: 999px;
+  padding: 3px;
+}
+.lang button {
+  font: 700 13px/1 var(--body);
+  letter-spacing: .06em;
+  color: var(--on-photo);
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+.lang button[aria-pressed="true"] { background: var(--teal); color: #fff; }
+
+.who { display: flex; align-items: center; gap: 16px; }
+.mascot { width: clamp(56px, 8.5vh, 96px); height: auto; flex: none; transform-origin: 50% 90%; }
+.mascot:hover { animation: wobble .7s ease-in-out; }
+@keyframes wobble { 30% { transform: rotate(-8deg); } 60% { transform: rotate(6deg); } }
+h1 {
+  font-family: var(--display);
+  font-weight: 900;
+  color: var(--orange);
+  font-size: clamp(1.6rem, min(2.6vw, 4.6vh), 2.6rem);
+  line-height: 1.08;
+  margin: 0;
+  text-wrap: balance;
+}
+.role { margin: 4px 0 0; color: var(--teal); font-weight: 700; font-size: clamp(.95rem, 1.15vw, 1.15rem); line-height: 1.3; }
+.place { margin: 2px 0 0; font-size: .9rem; opacity: .85; }
+
+.cvzone { display: grid; gap: 10px; }
+.eyebrow { margin: 0; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9fdcc3; }
+.cvzone h2 { margin: 0; font-family: var(--display); font-weight: 900; font-size: clamp(1.1rem, min(1.7vw, 3vh), 1.7rem); line-height: 1.2; color: var(--on-photo); }
+.cvs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cv {
+  display: grid;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--on-photo);
+}
+.cv .paper {
+  display: block;
+  width: 100%;
+  max-height: min(29vh, 300px);
+  aspect-ratio: 1200 / 1697;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 6px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .45);
+  outline: 3px solid transparent;
+  transition: transform .2s, outline-color .2s;
+}
+.cv .label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--teal);
+  color: #fff;
+  flex-wrap: wrap;
+  border-radius: 10px;
+  padding: 10px 14px;
+  transition: background-color .15s;
+}
+.cv .label strong { font-family: var(--display); font-size: 1.05rem; }
+.cv .label span { font-weight: 700; font-size: .85rem; color: var(--deep); white-space: nowrap; }
+.cv:hover .paper, .cv:focus-visible .paper { transform: translateY(-4px) rotate(-1deg); outline-color: var(--orange); }
+.cv:hover .label, .cv:focus-visible .label { background: var(--orange); }
+.cv:hover .label strong, .cv:focus-visible .label strong { color: var(--deep); }
+.cv:hover .label span, .cv:focus-visible .label span { color: #fff; }
+.cv:focus-visible { outline: none; }
+.pdfs { margin: 0; font-size: .85rem; opacity: .9; }
+.pdfs a { font-weight: 700; }
+
+.links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; font-size: .95rem; }
+.links a { font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+.links a:hover { color: var(--orange); }
+.links svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mail { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.mail code { font: 500 .95rem var(--body); user-select: all; }
+.copy {
+  font: 700 12px/1 var(--body);
+  letter-spacing: .05em;
+  color: var(--on-photo);
+  background: rgba(255, 253, 242, .12);
+  border: 1px solid rgba(255, 253, 242, .3);
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.copy:hover { background: rgba(255, 253, 242, .22); }
+
+/* ---------- Vitrine ---------- */
+.show {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(10px, 1.6vh, 18px);
+  padding-block: clamp(14px, 2.6vh, 32px);
+  padding-left: clamp(14px, 2vw, 32px);
+  padding-right: max(clamp(14px, 2vw, 32px), env(safe-area-inset-right, 0px));
+}
+.stage {
+  position: relative;
+  min-height: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #16191c;
+}
+.stage img, .stage video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity .45s ease;
+}
+.stage .fade { opacity: 0; }
+.play {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--orange);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.play svg { width: 28px; height: 28px; fill: var(--deep); }
+.cap {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: clamp(18px, 3vh, 32px) clamp(18px, 2.4vw, 36px);
+  background: linear-gradient(180deg, transparent, var(--shade) 38%);
+  color: var(--on-photo);
+  display: grid;
+  gap: 6px;
+}
+.cap h2 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 2.6vw, 2.5rem);
+  line-height: 1.1;
+  margin: 0;
+  color: var(--orange);
+  text-wrap: balance;
+}
+.cap .sub { margin: 0; color: #9fdcc3; font-style: italic; font-weight: 500; font-size: clamp(.95rem, 1.1vw, 1.1rem); }
+.cap .desc { margin: 0; max-width: 64ch; font-size: clamp(.92rem, 1.05vw, 1.05rem); }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.act {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  font-size: .9rem;
+  text-decoration: none;
+  color: #fff;
+  background: var(--teal);
+  border-radius: 999px;
+  padding: 8px 14px;
+  transition: background-color .15s;
+}
+.act:hover, .act:focus-visible { background: var(--orange); color: var(--deep); }
+.act svg { width: 14px; height: 14px; fill: currentColor; }
+.act.ghost { background: rgba(255, 253, 242, .14); }
+.act.ghost:hover { background: var(--orange); }
+
+.strip-wrap { min-width: 0; display: grid; gap: 8px; }
+.strip-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.strip-head p { margin: 0; font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.strip-head .count { font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.strip {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: clamp(6px, .8vw, 12px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 13vh;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--chip);
+  opacity: .62;
+  transition: opacity .2s, transform .2s;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb:hover { opacity: 1; transform: translateY(-2px); }
+.thumb[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 3px var(--orange); }
+.thumb .bar {
+  position: absolute;
+  left: 0; bottom: 0;
+  height: 4px;
+  width: 0;
+  background: var(--orange);
+}
+.strip-head .hint { text-transform: none; letter-spacing: 0; font-weight: 500; }
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb .bar.run, .mascot:hover { animation: none; }
+}
+
+/* ---------- Ecrans etroits : on empile, la page peut defiler ---------- */
+@media (max-width: 860px) {
+  html, body { height: auto; }
+  .app { height: auto; grid-template-columns: 1fr; }
+  .id {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    gap: 20px;
+  }
+  .show {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .stage { aspect-ratio: 4 / 5; max-width: 100%; }
+  .strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .thumb { max-height: none; }
+}
+@media (min-width: 861px) and (max-height: 700px) {
+  .place { display: none; }
+  .lang button { padding: 6px 11px; }
+}
+</style>
 </head>
 <body>
 
-  <div class="page landing">
-    <header class="cv-header">
-      <img class="mascot" src="assets/mascot.png" alt="" width="140" height="119">
-      <div class="titles">
-        <h1>Clémentine Garoche</h1>
+
+<div class="app" id="app">
+  <section class="id">
+    <div class="lang" role="group" aria-label="Langue / Language">
+      <button type="button" id="lang-fr" data-lang="fr" aria-pressed="true">FR</button>
+      <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+
+    <div class="who">
+      <img class="mascot" src="assets/mascot.png" alt="" width="96" height="82">
+      <div>
+        <h1 data-fr="Clémentine Garoche" data-en="Clementine Garoche">Clémentine Garoche</h1>
         <p class="role">3D Environment Artist - Technical Artist</p>
+        <p class="place">Montpellier (France)</p>
       </div>
-    </header>
-
-    <div class="choices">
-      <a class="choice" href="fr.html" hreflang="fr"><strong>Français</strong><span>Voir le CV</span></a>
-      <a class="choice" href="en.html" hreflang="en"><strong>English</strong><span>View resume</span></a>
     </div>
 
-    <p class="extra">
-      <a href="https://www.artstation.com/clementineg" target="_blank" rel="noopener">ArtStation</a>
-      &nbsp;|&nbsp; <a href="mailto:c.garoche@gmail.com">c.garoche@gmail.com</a>
-    </p>
-
-    <div class="gallery">
-      <img src="assets/side_materials.jpg" alt="Materials">
-      <img src="assets/side_tevarua.jpg" alt="Tevarua">
-      <img src="assets/side_lighthouse.jpg" alt="The Lighthouse">
-      <img src="assets/side_curiosity.jpg" alt="Curiosity Cabinet">
-      <img src="assets/side_underwater.jpg" alt="Underwater Base">
-      <img src="assets/side_pagoda.jpg" alt="The Pagoda">
-      <img src="assets/side_market.jpg" alt="Oriental Market">
+    <div class="cvzone">
+      <div class="cvs">
+        <a class="cv" href="fr.html" hreflang="fr">
+          <img class="paper" src="assets/landing/cv_fr.jpg" alt="Aperçu du CV en français" width="420" height="594">
+          <span class="label"><strong>Français</strong><span>Voir le CV →</span></span>
+        </a>
+        <a class="cv" href="en.html" hreflang="en">
+          <img class="paper" src="assets/landing/cv_en.jpg" alt="Preview of the English resume" width="420" height="594">
+          <span class="label"><strong>English</strong><span>View resume →</span></span>
+        </a>
+      </div>
+      <p class="pdfs"><span data-fr="Version PDF :" data-en="PDF version:">Version PDF :</span>
+        <a href="CV_Garoche_Clementine_fr.pdf">FR</a> · <a href="CV_Garoche_Clementine_en.pdf">EN</a></p>
     </div>
-  </div>
+
+    <div class="links">
+      <a href="https://www.artstation.com/clementineg" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l3 5h12l3-5z"/><path d="M9 3h6l7 12h-6z"/><path d="M8 7l-5 8h6l2-4"/></svg>ArtStation
+      </a>
+      <a href="https://luminou.github.io/Data_Projects/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span data-fr="Projets data (Python)" data-en="Data projects (Python)">Projets data (Python)</span>
+      </a>
+      <div class="mail">
+        <svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        <code id="mail">c.garoche@gmail.com</code>
+        <button class="copy" type="button" id="copy" data-fr="Copier" data-en="Copy">Copier</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="show" id="show" aria-label="Projets">
+    <figure class="stage" id="stage" style="margin:0">
+      <img id="img-a" src="assets/landing/shoreline.jpg" alt="">
+      <img id="img-b" class="fade" src="assets/landing/shoreline.jpg" alt="">
+      <video id="vid" class="fade" muted autoplay playsinline webkit-playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
+      <button class="play" type="button" id="play" hidden aria-label="Lire la vidéo"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1.5 L8.5 5 L3 8.5 Z"/></svg></button>
+      <figcaption class="cap">
+        <h2 id="p-name">Shoreline Shader</h2>
+        <p class="sub" id="p-sub"></p>
+        <p class="desc" id="p-desc"></p>
+        <div class="acts" id="p-acts"></div>
+      </figcaption>
+    </figure>
+
+    <div class="strip-wrap">
+      <div class="strip-head">
+        <p><span data-fr="Aperçu de mes projets" data-en="A glimpse of my projects">Aperçu de mes projets</span> <span class="hint" data-fr="· cliquez sur une vignette" data-en="· click a thumbnail">· cliquez sur une vignette</span></p>
+        <p class="count" id="count">1 / 8</p>
+      </div>
+      <ul class="strip" id="strip"></ul>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var AS = "https://www.artstation.com/artwork/";
+  var P = [
+    { id: "shoreline", name: "Shoreline Shader", pos: "50% 50%",
+      sub: { fr: "Stage VFX, R&D, OLM Digital (studio d’animation)", en: "VFX Internship, R&D, OLM Digital (animation studio)" },
+      desc: { fr: "Création d'un shader procédural de vagues océaniques dans Maya/Arnold pour un pipeline VFX toon-shading Pokémon-like.",
+              en: "Built a procedural, stylized ocean wave shader in Maya/Arnold for a toon-shaded VFX pipeline, Pokémon-like." },
+      links: [{ k: "page", u: "https://luminou.github.io/Shoreline_Shader/portfolio.html" }] },
+    { id: "tevarua", name: "Tevarua", pos: "50% 35%",
+      sub: { fr: "Jeu d’aventure et de réflexion stylisé à la 3e personne (UE, en groupe, 10 semaines)", en: "Stylized third-person puzzle-adventure game (UE, 10-week group project)" },
+      desc: { fr: "Rôle de technical artist : Master Materials, Blueprints, génération procédurale, modeling/texturing de props, VFX, locomotion des personnages, gestion de versions, rédaction de la documentation.",
+              en: "End-to-end technical art: Master Materials, Blueprints, procedural generation, prop modeling/texturing, VFX, character locomotion, version control, writing documentation." },
+      links: [{ k: "as", u: AS + "P4aWA3" }, { k: "yt", u: "https://youtu.be/8zTURTOZx3E?si=M441N0bFcL-KpsnF" }] },
+    { id: "lighthouse", name: "The Lighthouse", pos: "60% 40%",
+      sub: { fr: "Jeu d'exploration environnemental à la 1re personne (UE, 5 semaines)", en: "Environmental first-person exploration game (UE, 5-week project)" },
+      desc: { fr: "Blueprints, génération procédurale, foliage, VFX, modeling/texturing de props, gestion de versions.",
+              en: "Blueprints, procedural environment, foliage, VFX, prop modeling/texturing, version control." },
+      links: [{ k: "as", u: AS + "wr1ZQ6" }] },
+    { id: "curiosity", name: "Curiosity Cabinet", pos: "50% 45%",
+      sub: { fr: "Scène narrative interactive (UE, 5 semaines)", en: "Narrative interactive scene (UE, 5-week project)" },
+      desc: { fr: "Système d'interaction et d'inspection, modeling/sculpting/texturing de props, génération procédurale, illustrations traditionnelles.",
+              en: "Interaction and inspection system, prop modeling, sculpting, texturing, procedural generation, traditional illustrations." },
+      links: [{ k: "as", u: AS + "nJxNN4" }, { k: "yt", u: "https://youtu.be/Iv_bi0YykhI" }] },
+    { id: "underwater", name: "Underwater Base", pos: "50% 40%",
+      sub: { fr: "Environnement modulaire (UE, 5 semaines)", en: "Modular environment (UE, 5-week project)" },
+      desc: { fr: "Kits modulaires et trimsheets, modeling/texturing de props, shaders d'eau.",
+              en: "Trimsheet-based modular kits, prop modeling/texturing, water shading." },
+      links: [{ k: "as", u: AS + "nJrwLE" }, { k: "yt", u: "https://youtu.be/a2vJxgJDcw0" }] },
+    { id: "pagoda", name: "The Pagoda", pos: "50% 45%",
+      sub: { fr: "Scène extérieure nocturne stylisée à la 3e personne (UE, 5 semaines)", en: "Stylized third-person night exterior scene (UE, 5-week project)" },
+      desc: { fr: "Sculpting, retopologie, rigging, skinning et locomotion d'un personnage, modeling/texturing de props.",
+              en: "Character sculpting, retopology, rigging, skinning, locomotion, prop modeling/texturing." },
+      links: [{ k: "as", u: AS + "EzyKR4" }] },
+    { id: "market", name: "Oriental Market", pos: "50% 50%",
+      sub: { fr: "Scène extérieure thématique (UE, 5 semaines)", en: "Themed exterior scene (UE, 5-week project)" },
+      desc: { fr: "Modeling/texturing de props, génération procédurale, simulations physiques, vertex painting, gestion de versions.",
+              en: "Prop modeling/texturing, procedural generation, physics simulations, vertex painting, version control." },
+      links: [{ k: "as", u: AS + "4NBey4" }] },
+    { id: "materials", name: { fr: "Matériaux", en: "Materials" }, pos: "50% 50%", fit: "contain",
+      sub: { fr: "Turntables de matériaux", en: "Material turntables" },
+      desc: { fr: "Pavés moussus, tuiles, parquet Versailles réaliste, plumes, bolognaise, tentacules, calcaire stylisé et parquet stylisé.",
+              en: "Mossy cobblestone, roof tiles, realistic Versailles parquet, feathers, bolognese, tentacles, stylized limestone and stylized parquet." },
+      links: [{ k: "as", u: "https://www.artstation.com/clementineg" }] }
+  ];
+  var T = {
+    as: { fr: "Voir sur ArtStation", en: "View on ArtStation" },
+    yt: { fr: "Vidéo complète", en: "Full video" },
+    page: { fr: "Voir le portfolio", en: "View the portfolio" },
+    copied: { fr: "Copié", en: "Copied" }
+  };
+  var ICON = {
+    as: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l3 5h12l3-5z"/><path d="M9 3h6l7 12h-6z"/></svg>',
+    yt: '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z"/></svg>',
+    page: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7h-2V6.4l-8.3 8.3-1.4-1.4L17.6 5H14zM5 5h6v2H7v10h10v-4h2v6H5z"/></svg>'
+  };
+
+  var lang = "fr";
+  try { lang = localStorage.getItem("cg-lang") || ((navigator.language || "fr").slice(0, 2) === "fr" ? "fr" : "en"); } catch (e) {}
+
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var FALLBACK = 9000;
+  var cur = 0, timer = null, paused = false, front = "a";
+  var $ = function (id) { return document.getElementById(id); };
+  var strip = $("strip"), vid = $("vid"), show = $("show");
+  var base = "assets/landing/";
+
+  function nm(p) { return typeof p.name === "string" ? p.name : p.name[lang]; }
+
+  P.forEach(function (p, i) {
+    var li = document.createElement("li");
+    li.innerHTML = '<button class="thumb" type="button" id="t-' + p.id + '" aria-pressed="false">' +
+      '<img src="' + base + p.id + '_t.jpg" alt="" width="240" height="240"><span class="bar"></span></button>';
+    li.firstChild.addEventListener("click", function () { go(i, true); });
+    strip.appendChild(li);
+  });
+
+  function render() {
+    var p = P[cur];
+    $("p-name").textContent = nm(p);
+    $("p-sub").textContent = p.sub[lang];
+    $("p-desc").textContent = p.desc[lang];
+    $("p-acts").innerHTML = p.links.map(function (l, j) {
+      return '<a class="act' + (j ? " ghost" : "") + '" href="' + l.u + '" target="_blank" rel="noopener">' + ICON[l.k] + T[l.k][lang] + "</a>";
+    }).join("");
+    $("count").textContent = (cur + 1) + " / " + P.length;
+    P.forEach(function (q, i) {
+      var b = $("t-" + q.id);
+      b.setAttribute("aria-pressed", i === cur ? "true" : "false");
+      b.setAttribute("aria-label", nm(q));
+    });
+  }
+
+  function bar() { return document.querySelector('.thumb[aria-pressed="true"] .bar'); }
+  function resetBars() { document.querySelectorAll(".thumb .bar").forEach(function (x) { x.style.width = "0"; }); }
+
+  function swap() {
+    var p = P[cur];
+    var fit = p.fit || "cover";
+    var next = front === "a" ? "b" : "a";
+    var nImg = $("img-" + next), fImg = $("img-" + front);
+    var room = "0";
+    nImg.style.objectPosition = p.pos;
+    nImg.style.objectFit = fit;
+    nImg.style.height = room === "0" ? "100%" : "calc(100% - " + room + ")";
+    nImg.onload = function () {
+      nImg.onload = null;
+      nImg.classList.remove("fade");
+      fImg.classList.add("fade");
+      front = next;
+    };
+    nImg.src = base + p.id + ".jpg";
+    if (nImg.complete && nImg.onload) nImg.onload();
+
+    vid.classList.add("fade");
+    try { vid.pause(); } catch (e) {}
+    resetBars();
+    clearTimeout(timer);
+    if (reduce) return;
+    vid.style.objectPosition = p.pos;
+    vid.style.objectFit = fit;
+    vid.style.height = room === "0" ? "100%" : "calc(100% - " + room + ")";
+    vid.muted = true;
+    vid.defaultMuted = true;
+    vid.src = base + p.id + ".mp4";
+    vid.load();
+    tryPlay();
+  }
+
+  // Sur mobile, la lecture automatique peut etre refusee (navigateur integre a une appli,
+  // economie d'energie...). Dans ce cas un bouton lecture apparait ; apres un premier toucher,
+  // le navigateur autorise la suite des videos.
+  var blocked = false;
+  function tryPlay() {
+    var pr = vid.play();
+    if (pr && pr.catch) pr.catch(function (err) {
+      if (err && err.name === "AbortError") return;
+      blocked = true;
+      $("play").hidden = false;
+      fallback();
+    });
+  }
+  function unlock() {
+    if (!blocked) return;
+    blocked = false;
+    $("play").hidden = true;
+    vid.muted = true;
+    var pr = vid.play();
+    if (pr && pr.then) pr.then(function () { clearTimeout(timer); }, function () {});
+  }
+  $("play").addEventListener("click", function (e) { e.stopPropagation(); unlock(); });
+  ["touchend", "click"].forEach(function (ev) { document.addEventListener(ev, unlock, { passive: true }); });
+  vid.addEventListener("playing", function () { vid.classList.remove("fade"); $("play").hidden = true; blocked = false; });
+  vid.addEventListener("timeupdate", function () {
+    var b = bar();
+    if (b && vid.duration) b.style.width = (100 * vid.currentTime / vid.duration) + "%";
+  });
+  vid.addEventListener("ended", function () {
+    if (paused) { vid.currentTime = 0; vid.play().catch(function () {}); }
+    else go((cur + 1) % P.length, false);
+  });
+  vid.addEventListener("error", function () { fallback(); });
+
+  function fallback() {
+    clearTimeout(timer);
+    if (reduce) return;
+    timer = setTimeout(function () { if (!paused) go((cur + 1) % P.length, false); }, FALLBACK);
+  }
+
+  function go(i, user) {
+    cur = i;
+    render();
+    swap();
+    if (user) $("t-" + P[i].id).focus({ preventScroll: true });
+  }
+
+  show.addEventListener("mouseenter", function () { paused = true; });
+  show.addEventListener("mouseleave", function () { paused = false; });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") go((cur + 1) % P.length, true);
+    else if (e.key === "ArrowLeft") go((cur - 1 + P.length) % P.length, true);
+  });
+
+  function setLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    try { localStorage.setItem("cg-lang", l); } catch (e) {}
+    document.querySelectorAll("[data-" + l + "]").forEach(function (el) { el.textContent = el.getAttribute("data-" + l); });
+    document.querySelectorAll(".lang button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.lang === l ? "true" : "false"); });
+    render();
+  }
+  document.querySelectorAll(".lang button").forEach(function (b) {
+    b.addEventListener("click", function () { setLang(b.dataset.lang); });
+  });
+
+  $("copy").addEventListener("click", function () {
+    var btn = this, txt = $("mail").textContent;
+    function done() { btn.textContent = T.copied[lang]; setTimeout(function () { btn.textContent = btn.getAttribute("data-" + lang); }, 1600); }
+    function sel() {
+      var r = document.createRange(); r.selectNodeContents($("mail"));
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    }
+    try { navigator.clipboard.writeText(txt).then(done, sel); } catch (e) { sel(); }
+  });
+
+  setLang(lang);
+  go(0, false);
+})();
+</script>
 
 </body>
 </html>
