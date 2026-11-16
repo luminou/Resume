@@ -458,7 +458,9 @@ h1 {
   var lang = "fr";
   try { lang = localStorage.getItem("cg-lang") || ((navigator.language || "fr").slice(0, 2) === "fr" ? "fr" : "en"); } catch (e) {}
 
-  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Les videos sont le contenu de la page : elles jouent meme si l'appareil demande de reduire les animations
+  // (seules les animations decoratives, comme la mandarine, sont coupees en CSS dans ce cas).
+  var reduce = false;
   var cur = 0, timer = null, paused = false, front = "a";
   var $ = function (id) { return document.getElementById(id); };
   var strip = $("strip"), vid = $("vid"), show = $("show");
@@ -627,7 +629,7 @@ h1 {
       vid.addEventListener(n, function () { evs.push(n); if (evs.length > 8) evs.shift(); });
     });
     setInterval(function () {
-      dbg.textContent = "v3 | projet " + P[cur].id + " | modeImage=" + useAnim +
+      dbg.textContent = "v4 | projet " + P[cur].id + " | modeImage=" + useAnim +
         "\nvideo: paused=" + vid.paused + " ready=" + vid.readyState + " t=" + vid.currentTime.toFixed(2) +
         " err=" + (vid.error ? vid.error.code : "-") + "\nevents: " + evs.join(" ") +
         "\nimage: " + (anim.getAttribute("src") || "-") + " charg\u00e9e=" + (anim.complete && anim.naturalWidth > 0) +
