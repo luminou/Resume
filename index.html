@@ -481,13 +481,15 @@ h1 {
   var $ = function (id) { return document.getElementById(id); };
   var strip = $("strip"), vidC = $("vid"), vidG = $("vidg"), vid = vidC, show = $("show");
   var base = "assets/landing/";
+  // version des medias : a changer quand on remplace une video ou une image, pour contourner le cache
+  var V = "?v=20261123b";
 
   function nm(p) { return typeof p.name === "string" ? p.name : p.name[lang]; }
 
   P.forEach(function (p, i) {
     var li = document.createElement("li");
     li.innerHTML = '<button class="thumb" type="button" id="t-' + p.id + '" aria-pressed="false">' +
-      '<img src="' + base + p.id + '_t.jpg" alt="" width="240" height="240"><span class="bar"></span></button>';
+      '<img src="' + base + p.id + '_t.jpg' + V + '" alt="" width="240" height="240"><span class="bar"></span></button>';
     li.firstChild.addEventListener("click", function () { go(i, true); });
     strip.appendChild(li);
   });
@@ -560,7 +562,7 @@ h1 {
       fImg.classList.add("fade");
       front = next;
     };
-    nImg.src = base + p.id + ".jpg";
+    nImg.src = base + p.id + ".jpg" + V;
     if (nImg.complete && nImg.onload) nImg.onload();
 
     // on cache instantanement l'ancienne video / image animee (sans fondu), avant de changer leur cadrage
@@ -584,7 +586,7 @@ h1 {
     // on vide d'abord la video (Safari garde sinon la derniere image du projet precedent)
     vid.removeAttribute("src");
     try { vid.load(); } catch (e) {}
-    vid.src = base + p.id + ".mp4";
+    vid.src = base + p.id + ".mp4" + V;
     vid.load();
     var pr = vid.play();
     // Refus explicite du navigateur : on passe pour de bon aux images animees.
@@ -617,7 +619,7 @@ h1 {
     animTemp = !!temp;
     var t0 = Date.now(), d = (DUR[p.id] || 9) * 1000;
     anim.onload = function () { anim.onload = null; anim.classList.remove("fade"); };
-    anim.src = base + p.id + "_a.webp";
+    anim.src = base + p.id + "_a.webp" + V;
     clearTimeout(timer);
     (function tick() {
       if (animTemp && isPlaying()) return;           // la video a pris le relais
