@@ -100,25 +100,25 @@ a { color: inherit; }
 .lang button[aria-pressed="true"] { background: var(--teal); color: #fff; }
 
 .who { display: flex; align-items: center; gap: 16px; }
-.mascot { width: clamp(56px, 8.5vh, 96px); height: auto; flex: none; transform-origin: 50% 90%; }
+.mascot { width: clamp(64px, 10.5vh, 120px); height: auto; flex: none; transform-origin: 50% 90%; }
 .mascot:hover { animation: wobble .7s ease-in-out; }
 @keyframes wobble { 30% { transform: rotate(-8deg); } 60% { transform: rotate(6deg); } }
 h1 {
   font-family: var(--display);
   font-weight: 900;
   color: var(--orange);
-  font-size: clamp(1.6rem, min(2.6vw, 4.6vh), 2.6rem);
+  font-size: clamp(2rem, min(3.1vw, 5.6vh), 3.2rem);
   line-height: 1.08;
   margin: 0;
   text-wrap: balance;
 }
-.role { margin: 4px 0 0; color: var(--teal); font-weight: 700; font-size: clamp(.95rem, 1.15vw, 1.15rem); line-height: 1.3; }
-.place { margin: 2px 0 0; font-size: .9rem; opacity: .85; }
+.role { margin: 6px 0 0; color: var(--teal); font-weight: 700; font-size: clamp(1.05rem, 1.3vw, 1.35rem); line-height: 1.3; }
+.place { margin: 4px 0 0; font-size: clamp(1rem, 1.15vw, 1.15rem); opacity: .9; }
 
 .cvzone { display: grid; gap: 10px; }
 .eyebrow { margin: 0; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9fdcc3; }
 .cvzone h2 { margin: 0; font-family: var(--display); font-weight: 900; font-size: clamp(1.1rem, min(1.7vw, 3vh), 1.7rem); line-height: 1.2; color: var(--on-photo); }
-.cvs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cvs { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(22px, 2.6vw, 40px); }
 .cv {
   display: grid;
   gap: 10px;
@@ -150,7 +150,8 @@ h1 {
   transition: background-color .15s;
 }
 .cv .label strong { font-family: var(--display); font-size: 1.05rem; }
-.cv .label span { font-weight: 700; font-size: .85rem; color: var(--deep); white-space: nowrap; }
+.cv .label span { font-weight: 700; font-size: .92rem; color: var(--deep); white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+.cv .label .arr { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .cv:hover .paper, .cv:focus-visible .paper { transform: translateY(-4px) rotate(-1deg); outline-color: var(--orange); }
 .cv:hover .label, .cv:focus-visible .label { background: var(--orange); }
 .cv:hover .label strong, .cv:focus-visible .label strong { color: var(--deep); }
@@ -351,11 +352,11 @@ h1 {
       <div class="cvs">
         <a class="cv" href="fr.html" hreflang="fr">
           <img class="paper" src="assets/landing/cv_fr.jpg" alt="Aperçu du CV en français" width="420" height="594">
-          <span class="label"><strong>Français</strong><span>Voir le CV →</span></span>
+          <span class="label"><strong>Français</strong><span>Voir le CV <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></span>
         </a>
         <a class="cv" href="en.html" hreflang="en">
           <img class="paper" src="assets/landing/cv_en.jpg" alt="Preview of the English resume" width="420" height="594">
-          <span class="label"><strong>English</strong><span>View resume →</span></span>
+          <span class="label"><strong>English</strong><span>View resume <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></span>
         </a>
       </div>
       <p class="pdfs"><span data-fr="Version PDF :" data-en="PDF version:">Version PDF :</span>
@@ -406,7 +407,7 @@ h1 {
 (function () {
   var AS = "https://www.artstation.com/artwork/";
   var P = [
-    { id: "shoreline", name: "Shoreline Shader", pos: "50% 50%", light: true,
+    { id: "shoreline", name: "Shoreline Shader", pos: "50% 50%", light: true, fit: "contain",
       sub: { fr: "Stage VFX, R&D, OLM Digital (studio d’animation)", en: "VFX Internship, R&D, OLM Digital (animation studio)" },
       desc: { fr: "Création d'un shader procédural de vagues océaniques dans Maya/Arnold pour un pipeline VFX toon-shading Pokémon-like.",
               en: "Built a procedural, stylized ocean wave shader in Maya/Arnold for a toon-shaded VFX pipeline, Pokémon-like." },
@@ -472,7 +473,7 @@ h1 {
   var strip = $("strip"), vidC = $("vid"), vidG = $("vidg"), vid = vidC, show = $("show");
   var base = "assets/landing/";
   // version des medias : a changer quand on remplace une video ou une image, pour contourner le cache
-  var V = "?v=20261124c";
+  var V = "?v=20261124d";
 
   function nm(p) { return typeof p.name === "string" ? p.name : p.name[lang]; }
 
@@ -488,6 +489,7 @@ h1 {
     var p = P[cur];
     $("p-name").textContent = nm(p);
     document.querySelector(".cap").classList.toggle("light", !!p.light);
+    $("stage").style.background = p.light ? "#fff" : "";
     $("p-sub").textContent = p.sub[lang];
     $("p-desc").textContent = p.desc[lang];
     $("p-desc").style.display = p.desc[lang] ? "" : "none";
@@ -507,7 +509,7 @@ h1 {
 
   // Cadrage. Pour les projets "contain" (grille des materiaux), on calcule nous-memes la taille
   // et la position de l'image/video : Safari applique mal object-fit:contain aux premieres images d'une video.
-  var AR = { materials: 1292 / 644 };
+  var AR = { shoreline: 960 / 540 };
   function place(el, p) {
     if ((p.fit || "cover") === "contain" && AR[p.id]) {
       var st = $("stage"), W = st.clientWidth, H = st.clientHeight, ar = AR[p.id], w, h;
@@ -598,7 +600,7 @@ h1 {
 
   // Secours image animee
   var anim = $("anim"), useAnim = false, check = null, animTemp = false;
-  var DUR = { shoreline: 12, tevarua: 8, lighthouse: 12, curiosity: 8.5, underwater: 9, pagoda: 8.6, witch: 10.4, materials: 10 };
+  var DUR = { shoreline: 12, tevarua: 9, lighthouse: 12, curiosity: 8.5, underwater: 9, pagoda: 8.6, witch: 10.4, materials: 10 };
   function toAnim() {
     clearTimeout(check);
     if (useAnim) return;
