@@ -420,7 +420,7 @@ h1 {
       sub: { fr: "Stage VFX, R&D, OLM Digital (studio d’animation)", en: "VFX Internship, R&D, OLM Digital (animation studio)" },
       desc: { fr: "Création d'un shader procédural de vagues océaniques dans Maya/Arnold pour un pipeline VFX toon-shading Pokémon-like.",
               en: "Built a procedural, stylized ocean wave shader in Maya/Arnold for a toon-shaded VFX pipeline, Pokémon-like." },
-      links: [{ k: "as", u: AS + "P44vz1" }, { k: "explain", u: "https://luminou.github.io/Shoreline_Shader/shorelineshadersummary.html#jouer" }] },
+      links: [{ k: "explain", u: "https://luminou.github.io/Shoreline_Shader/shorelineshadersummary.html#jouer" }] },
     { id: "tevarua", name: "Tevarua", pos: "50% 35%",
       sub: { fr: "Jeu d’aventure et de réflexion stylisé à la 3e personne (UE, en groupe, 10 semaines)", en: "Stylized third-person puzzle-adventure game (UE, 10-week group project)" },
       desc: { fr: "Rôle de technical artist : Master Materials, Blueprints, génération procédurale, modeling/texturing de props, VFX, locomotion des personnages, gestion de versions, rédaction de la documentation.",
@@ -448,13 +448,13 @@ h1 {
       links: [{ k: "as", u: AS + "EzyKR4" }] },
     { id: "witch", name: "The Witch\u2019s Workshop", pos: "50% 50%",
       sub: { fr: "Diorama de props hand-painted (projet personnel)", en: "Hand-painted props diorama (personal project)" },
-      desc: { fr: "Props modélisés dans Blender et peints à la main dans Substance 3D Painter, en cherchant la bonne échelle de coup de pinceau pour chaque asset.",
-              en: "Props modelled in Blender and hand-painted in Substance 3D Painter, finding the right brushstroke scale for each asset." },
+      desc: { fr: "Props modélisés dans Blender et peints à la main dans Substance 3D Painter.",
+              en: "Props modelled in Blender and hand-painted in Substance 3D Painter." },
       links: [{ k: "as", u: AS + "2Lkgng" }] },
     { id: "materials", name: { fr: "Matériaux", en: "Materials" }, pos: "50% 50%",
       sub: { fr: "Turntables de matériaux", en: "Material turntables" },
-      desc: { fr: "Pavés moussus, pavés jaunes, tuiles, parquet Versailles et parquet à chevrons réalistes, plumes, bolognaise, tentacules, calcaire stylisé et parquet stylisé.",
-              en: "Mossy cobblestone, yellow cobblestone, roof tiles, realistic Versailles and herringbone parquet, feathers, bolognese, tentacles, stylized limestone and stylized parquet." },
+      desc: { fr: "",
+              en: "" },
       links: [{ k: "as", u: "https://www.artstation.com/clementineg" }] }
   ];
   var T = {
@@ -500,6 +500,7 @@ h1 {
     document.querySelector(".cap").classList.toggle("light", !!p.light);
     $("p-sub").textContent = p.sub[lang];
     $("p-desc").textContent = p.desc[lang];
+    $("p-desc").style.display = p.desc[lang] ? "" : "none";
     $("p-acts").innerHTML = p.links.map(function (l, j) {
       return '<a class="act' + (j ? " ghost" : "") + '" href="' + l.u + '" target="_blank" rel="noopener">' + ICON[l.k] + T[l.k][lang] + "</a>";
     }).join("");
