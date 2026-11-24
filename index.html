@@ -446,11 +446,11 @@ h1 {
       desc: { fr: "Sculpting, retopologie, rigging, skinning et locomotion d'un personnage, modeling/texturing de props.",
               en: "Character sculpting, retopology, rigging, skinning, locomotion, prop modeling/texturing." },
       links: [{ k: "as", u: AS + "EzyKR4" }] },
-    { id: "market", name: "Oriental Market", pos: "50% 50%",
-      sub: { fr: "Scène extérieure thématique (UE, 5 semaines)", en: "Themed exterior scene (UE, 5-week project)" },
-      desc: { fr: "Modeling/texturing de props, génération procédurale, simulations physiques, vertex painting, gestion de versions.",
-              en: "Prop modeling/texturing, procedural generation, physics simulations, vertex painting, version control." },
-      links: [{ k: "as", u: AS + "4NBey4" }] },
+    { id: "witch", name: "The Witch\u2019s Workshop", pos: "50% 50%",
+      sub: { fr: "Diorama de props hand-painted (projet personnel)", en: "Hand-painted props diorama (personal project)" },
+      desc: { fr: "Props modélisés dans Blender et peints à la main dans Substance 3D Painter, en cherchant la bonne échelle de coup de pinceau pour chaque asset.",
+              en: "Props modelled in Blender and hand-painted in Substance 3D Painter, finding the right brushstroke scale for each asset." },
+      links: [{ k: "as", u: AS + "2Lkgng" }] },
     { id: "materials", name: { fr: "Matériaux", en: "Materials" }, pos: "50% 50%",
       sub: { fr: "Turntables de matériaux", en: "Material turntables" },
       desc: { fr: "Pavés moussus, pavés jaunes, tuiles, parquet Versailles et parquet à chevrons réalistes, plumes, bolognaise, tentacules, calcaire stylisé et parquet stylisé.",
@@ -482,7 +482,7 @@ h1 {
   var strip = $("strip"), vidC = $("vid"), vidG = $("vidg"), vid = vidC, show = $("show");
   var base = "assets/landing/";
   // version des medias : a changer quand on remplace une video ou une image, pour contourner le cache
-  var V = "?v=20261123b";
+  var V = "?v=20261124a";
 
   function nm(p) { return typeof p.name === "string" ? p.name : p.name[lang]; }
 
@@ -607,7 +607,7 @@ h1 {
 
   // Secours image animee
   var anim = $("anim"), useAnim = false, check = null, animTemp = false;
-  var DUR = { shoreline: 12, tevarua: 8, lighthouse: 12, curiosity: 8.5, underwater: 9, pagoda: 8.6, market: 6.9, materials: 10 };
+  var DUR = { shoreline: 12, tevarua: 8, lighthouse: 12, curiosity: 8.5, underwater: 9, pagoda: 8.6, witch: 10.4, materials: 10 };
   function toAnim() {
     clearTimeout(check);
     if (useAnim) return;
