@@ -222,6 +222,27 @@ h1 {
   z-index: 2;
 }
 .play svg { width: 28px; height: 28px; fill: var(--deep); }
+.nav {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: rgba(10, 18, 14, .35);
+  color: var(--orange);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 3;
+  transition: background-color .15s, color .15s, transform .15s;
+}
+.nav.prev { left: 14px; }
+.nav.next { right: 14px; }
+.nav svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.nav:hover, .nav:focus-visible { background: var(--orange); color: #fff; }
 .cap {
   position: absolute;
   left: 0; right: 0; bottom: 0;
@@ -269,7 +290,7 @@ h1 {
 .strip-head .count { font-variant-numeric: tabular-nums; letter-spacing: .04em; }
 .strip {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: clamp(6px, .8vw, 12px);
   margin: 0;
   padding: 0;
@@ -385,6 +406,8 @@ h1 {
       <video id="vid" class="fade" muted autoplay playsinline webkit-playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
       <video id="vidg" class="fade" muted autoplay playsinline webkit-playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
       <img id="anim" class="fade" alt="">
+      <button type="button" class="nav prev" id="nav-prev" aria-label="Previous project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="nav next" id="nav-next" aria-label="Next project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
       <figcaption class="cap">
         <h2 id="p-name">Shoreline Shader</h2>
         <p class="sub" id="p-sub"></p>
@@ -396,7 +419,7 @@ h1 {
     <div class="strip-wrap">
       <div class="strip-head">
         <p><span data-fr="Aperçu de mes projets" data-en="A glimpse of my projects">Aperçu de mes projets</span> <span class="hint" data-fr="· cliquez sur une vignette" data-en="· click a thumbnail">· cliquez sur une vignette</span></p>
-        <p class="count" id="count">1 / 8</p>
+        <p class="count" id="count">1 / 7</p>
       </div>
       <ul class="strip" id="strip"></ul>
     </div>
@@ -432,11 +455,6 @@ h1 {
       desc: { fr: "Kits modulaires et trimsheets, modeling/texturing de props, shaders d'eau.",
               en: "Trimsheet-based modular kits, prop modeling/texturing, water shading." },
       links: [{ k: "as", u: AS + "nJrwLE" }, { k: "yt", u: "https://youtu.be/a2vJxgJDcw0" }] },
-    { id: "pagoda", name: "The Pagoda", pos: "50% 45%",
-      sub: { fr: "Scène extérieure nocturne stylisée à la 3e personne (UE, 5 semaines)", en: "Stylized third-person night exterior scene (UE, 5-week project)" },
-      desc: { fr: "Sculpting, retopologie, rigging, skinning et locomotion d'un personnage, modeling/texturing de props.",
-              en: "Character sculpting, retopology, rigging, skinning, locomotion, prop modeling/texturing." },
-      links: [{ k: "as", u: AS + "EzyKR4" }] },
     { id: "witch", name: "The Witch\u2019s Workshop", pos: "50% 50%",
       sub: { fr: "Diorama de props hand-painted (Blender, 4 semaines)", en: "Hand-painted props diorama (Blender, 4-week project)" },
       desc: { fr: "Props modélisés dans Blender et peints à la main dans Substance 3D Painter.",
@@ -473,7 +491,7 @@ h1 {
   var strip = $("strip"), vidC = $("vid"), vidG = $("vidg"), vid = vidC, show = $("show");
   var base = "assets/landing/";
   // version des medias : a changer quand on remplace une video ou une image, pour contourner le cache
-  var V = "?v=20261124d";
+  var V = "?v=20261124e";
 
   function nm(p) { return typeof p.name === "string" ? p.name : p.name[lang]; }
 
@@ -600,7 +618,7 @@ h1 {
 
   // Secours image animee
   var anim = $("anim"), useAnim = false, check = null, animTemp = false;
-  var DUR = { shoreline: 12, tevarua: 9, lighthouse: 12, curiosity: 8.5, underwater: 9, pagoda: 8.6, witch: 10.4, materials: 10 };
+  var DUR = { shoreline: 7, tevarua: 9, lighthouse: 12, curiosity: 8.5, underwater: 9, witch: 10.4, materials: 10 };
   function toAnim() {
     clearTimeout(check);
     if (useAnim) return;
@@ -669,6 +687,9 @@ h1 {
   function isMouse(e) { return e.pointerType === "mouse" && Date.now() - lastTouch > 1500; }
   show.addEventListener("pointerenter", function (e) { if (isMouse(e)) paused = true; });
   show.addEventListener("pointerleave", function (e) { if (isMouse(e)) paused = false; });
+
+  $("nav-prev").addEventListener("click", function () { go((cur - 1 + P.length) % P.length, false); });
+  $("nav-next").addEventListener("click", function () { go((cur + 1) % P.length, false); });
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "ArrowRight") go((cur + 1) % P.length, true);
