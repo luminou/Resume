@@ -350,8 +350,9 @@ h1 {
   .stage { aspect-ratio: 4 / 5; max-width: 100%; }
   .show { --ov: 0px; padding-left: max(16px, env(safe-area-inset-left, 0px)) !important; padding-right: max(16px, env(safe-area-inset-right, 0px)) !important; }
   .show > .strip-wrap { padding-left: 0; padding-right: 0; }
-  .strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .thumb { max-height: none; }
+  .strip { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .strip > li { flex: 0 0 calc((100% - 24px) / 4); }
+  .thumb { max-height: none; height: auto; aspect-ratio: 1; }
 }
 @media (min-width: 861px) and (max-height: 700px) {
   .place { display: none; }
