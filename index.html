@@ -22,6 +22,8 @@
 <style>
 /* Mise en page : panneau identite (photo sombre, comme le bandeau du CV) a gauche,
    vitrine de projets interactive a droite. Tout tient dans un ecran, sans defilement. */
+@font-face { font-family: "Quicksand"; src: url("assets/fonts/quicksand-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Quicksand"; src: url("assets/fonts/quicksand-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
 @font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
 @font-face { font-family: "Roboto"; src: url("assets/fonts/roboto-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
@@ -113,7 +115,7 @@ h1 {
   margin: 0;
   text-wrap: balance;
 }
-.role { margin: 6px 0 0; color: var(--teal); font-weight: 700; font-size: clamp(.9rem, 1.05vw, 1.3rem); line-height: 1.3; white-space: nowrap; }
+.role { margin: 6px 0 0; color: var(--teal); font-weight: 700; font-family: "Quicksand", var(--body); font-size: clamp(1.15rem, 1.55vw, 1.8rem); line-height: 1.22; }
 .place { margin: 4px 0 0; font-size: clamp(1rem, 1.15vw, 1.15rem); opacity: .9; }
 
 .cvzone { display: grid; gap: 10px; }
@@ -193,10 +195,14 @@ h1 {
 .stage {
   position: relative;
   min-height: 0;
-  border-radius: 16px;
   overflow: hidden;
-  background: #16191c;
+  background: transparent;
+  margin: 0 0 calc(-1 * var(--ov));
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--ov) - 30px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--ov) - 30px), transparent 100%);
 }
+.show { --ov: calc(clamp(120px, 22vh, 230px) + 34px); padding-top: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+.show > .strip-wrap { position: relative; z-index: 3; padding-left: clamp(14px, 2vw, 32px); padding-right: max(clamp(14px, 2vw, 32px), env(safe-area-inset-right, 0px)); }
 .stage img, .stage video {
   position: absolute;
   inset: 0;
@@ -247,8 +253,8 @@ h1 {
 .cap {
   position: absolute;
   left: 0; right: 0; bottom: 0;
-  padding: clamp(18px, 3vh, 32px) clamp(18px, 2.4vw, 36px);
-  background: linear-gradient(180deg, transparent, var(--shade) 38%);
+  padding: clamp(18px, 3vh, 32px) clamp(18px, 2.6vw, 40px) calc(var(--ov) + 44px);
+  background: linear-gradient(180deg, rgba(9, 20, 15, 0), rgba(9, 20, 15, .35) 25%, var(--shade) 60%);
   color: var(--on-photo);
   display: grid;
   gap: 6px;
@@ -342,6 +348,8 @@ h1 {
     padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
   .stage { aspect-ratio: 4 / 5; max-width: 100%; }
+  .show { --ov: 0px; padding-left: max(16px, env(safe-area-inset-left, 0px)) !important; padding-right: max(16px, env(safe-area-inset-right, 0px)) !important; }
+  .show > .strip-wrap { padding-left: 0; padding-right: 0; }
   .strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .thumb { max-height: none; }
 }
@@ -365,7 +373,7 @@ h1 {
       <img class="mascot" src="assets/mascot.png" alt="" width="96" height="82">
       <div>
         <h1 data-fr="Clémentine Garoche" data-en="Clementine Garoche">Clémentine Garoche</h1>
-        <p class="role">3D Environment Artist - Technical Artist</p>
+        <p class="role">3D Environment Artist<br>Technical Artist</p>
         <p class="place">Montpellier (France)</p>
       </div>
     </div>
@@ -373,11 +381,11 @@ h1 {
     <div class="cvzone">
       <div class="cvs">
         <a class="cv" href="fr.html" hreflang="fr">
-          <img class="paper" src="assets/landing/cv_fr.jpg?v=2" alt="Aperçu du CV en français" width="900" height="1233">
+          <img class="paper" src="assets/landing/cv_fr.jpg?v=3" alt="Aperçu du CV en français" width="900" height="1288">
           <span class="label"><strong>Français</strong><span>Voir le CV <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></span>
         </a>
         <a class="cv" href="en.html" hreflang="en">
-          <img class="paper" src="assets/landing/cv_en.jpg?v=2" alt="Preview of the English resume" width="900" height="1233">
+          <img class="paper" src="assets/landing/cv_en.jpg?v=3" alt="Preview of the English resume" width="900" height="1288">
           <span class="label"><strong>English</strong><span>View resume <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></span>
         </a>
       </div>
@@ -401,7 +409,7 @@ h1 {
   </section>
 
   <section class="show" id="show" aria-label="Projets">
-    <figure class="stage" id="stage" style="margin:0">
+    <figure class="stage" id="stage">
       <img id="img-a" src="assets/landing/shoreline.jpg" alt="">
       <img id="img-b" class="fade" src="assets/landing/shoreline.jpg" alt="">
       <video id="vid" class="fade" muted autoplay playsinline webkit-playsinline disablepictureinpicture preload="none" aria-hidden="true"></video>
@@ -431,37 +439,37 @@ h1 {
 (function () {
   var AS = "https://www.artstation.com/artwork/";
   var P = [
-    { id: "shoreline", name: "Shoreline Shader", pos: "50% 50%", bg: "#111a15", fit: "contain",
+    { id: "shoreline", name: "Shoreline Shader", pos: "50% 50%", bg: "#111a15", fit: "contain", full: true,
       sub: { fr: "Stage VFX, R&D, OLM Digital (studio d’animation)", en: "VFX Internship, R&D, OLM Digital (animation studio)" },
       desc: { fr: "Création d'un shader procédural de vagues océaniques dans Maya/Arnold pour un pipeline VFX toon-shading Pokémon-like.",
               en: "Built a procedural, stylized ocean wave shader in Maya/Arnold for a toon-shaded VFX pipeline, Pokémon-like." },
       links: [{ k: "explain", u: "https://luminou.github.io/Shoreline_Shader/shorelineshadersummary.html#jouer" }] },
-    { id: "tevarua", name: "Tevarua", pos: "50% 35%",
+    { id: "tevarua", name: "Tevarua", pos: "50% 35%", fit: "contain",
       sub: { fr: "Jeu d’aventure et de réflexion stylisé à la 3e personne (UE, en groupe, 10 semaines)", en: "Stylized third-person puzzle-adventure game (UE, 10-week group project)" },
       desc: { fr: "Rôle de technical artist : Master Materials, Blueprints, génération procédurale, modeling/texturing de props, VFX, locomotion des personnages, gestion de versions, rédaction de la documentation.",
               en: "End-to-end technical art: Master Materials, Blueprints, procedural generation, prop modeling/texturing, VFX, character locomotion, version control, writing documentation." },
       links: [{ k: "as", u: AS + "P4aWA3" }, { k: "yt", u: "https://youtu.be/8zTURTOZx3E?si=M441N0bFcL-KpsnF" }] },
-    { id: "lighthouse", name: "The Lighthouse", pos: "60% 40%",
+    { id: "lighthouse", name: "The Lighthouse", pos: "60% 40%", fit: "contain",
       sub: { fr: "Jeu d'exploration environnemental à la 1re personne (UE, 5 semaines)", en: "Environmental first-person exploration game (UE, 5-week project)" },
       desc: { fr: "Blueprints, génération procédurale, foliage, VFX, modeling/texturing de props, gestion de versions.",
               en: "Blueprints, procedural environment, foliage, VFX, prop modeling/texturing, version control." },
       links: [{ k: "as", u: AS + "wr1ZQ6" }] },
-    { id: "curiosity", name: "Curiosity Cabinet", pos: "50% 45%",
+    { id: "curiosity", name: "Curiosity Cabinet", pos: "50% 45%", fit: "contain", full: true,
       sub: { fr: "Scène narrative interactive (UE, 5 semaines)", en: "Narrative interactive scene (UE, 5-week project)" },
       desc: { fr: "Système d'interaction et d'inspection, modeling/sculpting/texturing de props, génération procédurale, illustrations traditionnelles.",
               en: "Interaction and inspection system, prop modeling, sculpting, texturing, procedural generation, traditional illustrations." },
       links: [{ k: "as", u: AS + "nJxNN4" }, { k: "yt", u: "https://youtu.be/Iv_bi0YykhI" }] },
-    { id: "underwater", name: "Underwater Base", pos: "50% 40%",
+    { id: "underwater", name: "Underwater Base", pos: "50% 40%", fit: "contain",
       sub: { fr: "Environnement modulaire (UE, 5 semaines)", en: "Modular environment (UE, 5-week project)" },
       desc: { fr: "Kits modulaires et trimsheets, modeling/texturing de props, shaders d'eau.",
               en: "Trimsheet-based modular kits, prop modeling/texturing, water shading." },
       links: [{ k: "as", u: AS + "nJrwLE" }, { k: "yt", u: "https://youtu.be/a2vJxgJDcw0" }] },
-    { id: "witch", name: "The Witch\u2019s Workshop", pos: "50% 50%",
+    { id: "witch", name: "The Witch\u2019s Workshop", pos: "50% 50%", fit: "contain",
       sub: { fr: "Diorama de props hand-painted (Blender, 4 semaines)", en: "Hand-painted props diorama (Blender, 4-week project)" },
       desc: { fr: "Props modélisés dans Blender et peints à la main dans Substance 3D Painter.",
               en: "Props modelled in Blender and hand-painted in Substance 3D Painter." },
       links: [{ k: "as", u: AS + "2Lkgng" }] },
-    { id: "materials", name: { fr: "Matériaux", en: "Materials" }, pos: "50% 50%",
+    { id: "materials", name: { fr: "Matériaux", en: "Materials" }, pos: "50% 50%", fit: "contain",
       sub: { fr: "Matériaux réalisés avec Substance Designer", en: "Materials made with Substance Designer" },
       desc: { fr: "",
               en: "" },
@@ -492,7 +500,7 @@ h1 {
   var strip = $("strip"), vidC = $("vid"), vidG = $("vidg"), vid = vidC, show = $("show");
   var base = "assets/landing/";
   // version des medias : a changer quand on remplace une video ou une image, pour contourner le cache
-  var V = "?v=20261124f";
+  var V = "?v=20261124g";
 
   function nm(p) { return typeof p.name === "string" ? p.name : p.name[lang]; }
 
@@ -529,30 +537,35 @@ h1 {
 
   // Cadrage. Pour les projets "contain" (grille des materiaux), on calcule nous-memes la taille
   // et la position de l'image/video : Safari applique mal object-fit:contain aux premieres images d'une video.
-  var AR = { shoreline: 960 / 540 };
+  var AR = { shoreline: 960 / 540, tevarua: 16 / 9, lighthouse: 1600 / 870, curiosity: 1920 / 994, underwater: 1600 / 902, witch: 1600 / 870, materials: 1360 / 940 };
   function place(el, p) {
-    if ((p.fit || "cover") === "contain" && AR[p.id]) {
-      var st = $("stage"), W = st.clientWidth, H = st.clientHeight, ar = AR[p.id], w, h;
-      if (W / H > ar) { h = H; w = H * ar; } else { w = W; h = W / ar; }
+    if (AR[p.id]) {
+      // largeur pleine ; si l'image est trop basse pour couvrir la zone visible au-dessus des vignettes, on l'agrandit
+      var st = $("stage"), W = st.clientWidth, H = st.clientHeight, ar = AR[p.id];
+      var ov = -parseFloat(getComputedStyle(st).marginBottom) || 0, hv = H - ov + 40;
+      var w = W, h = W / ar;
+      if (h < hv && !p.full) { h = hv; w = h * ar; }
       el.style.objectFit = "fill";
       el.style.width = w + "px"; el.style.height = h + "px";
-      el.style.left = ((W - w) / 2) + "px"; el.style.top = ((H - h) * 0.25) + "px";
+      el.style.left = ((W - w) / 2) + "px"; el.style.top = "0px";
       el.style.right = "auto"; el.style.bottom = "auto";
+      el.style.webkitMaskImage = el.style.maskImage = h < H ? "linear-gradient(to bottom, #000 calc(100% - 120px), transparent)" : "";
     } else {
       el.style.objectFit = "cover";
       el.style.width = "100%"; el.style.height = "100%";
       el.style.left = "0"; el.style.top = "0"; el.style.right = ""; el.style.bottom = "";
+      el.style.webkitMaskImage = el.style.maskImage = "";
     }
   }
   addEventListener("resize", function () {
     var p = P[cur];
     [anim, $("img-" + front)].forEach(function (el) { place(el, p); });
-    placeGrid();
+    placeGrid(p);
   });
   // Deux lecteurs video distincts : un plein cadre, un pour la grille des materiaux.
   // Leur cadrage ne change jamais d'un projet a l'autre (Safari mettait plusieurs images
   // a appliquer un nouveau cadrage, d'ou l'effet de zoom/decalage sur telephone).
-  function placeGrid() { var g = P.filter(function (q) { return q.fit === "contain"; })[0]; if (g) place(vidG, g); }
+  function placeGrid(p) { var g = (p && p.fit === "contain") ? p : P.filter(function (q) { return q.fit === "contain"; })[0]; if (g) place(vidG, g); }
   placeGrid();
 
   var lastFit = "cover";
@@ -584,7 +597,7 @@ h1 {
     [vidC, vidG].forEach(function (v) { try { v.pause(); } catch (e) {} });
     var other = fit === "contain" ? vidC : vidG;
     vid = fit === "contain" ? vidG : vidC;
-    if (vid === vidG) placeGrid();
+    if (vid === vidG) placeGrid(p);
     if (other.getAttribute("src")) { other.removeAttribute("src"); try { other.load(); } catch (e) {} }
     resetBars();
     clearTimeout(timer);
