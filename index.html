@@ -500,7 +500,7 @@ h1 {
   var strip = $("strip"), vidC = $("vid"), vidG = $("vidg"), vid = vidC, show = $("show");
   var base = "assets/landing/";
   // version des medias : a changer quand on remplace une video ou une image, pour contourner le cache
-  var V = "?v=20261124g";
+  var V = "?v=20261124i";
 
   function nm(p) { return typeof p.name === "string" ? p.name : p.name[lang]; }
 
@@ -587,6 +587,7 @@ h1 {
       nImg.classList.remove("fade");
       fImg.classList.add("fade");
       front = next;
+      if ((!vid.classList.contains("fade") && (vid.currentSrc || "").indexOf("/" + p.id + ".mp4") >= 0) || (!anim.classList.contains("fade") && (anim.src || "").indexOf("/" + p.id + "_a") >= 0)) hidePoster();
     };
     nImg.src = base + p.id + ".jpg" + V;
     if (nImg.complete && nImg.onload) nImg.onload();
@@ -644,7 +645,7 @@ h1 {
   function showAnim(p, temp) {
     animTemp = !!temp;
     var t0 = Date.now(), d = (DUR[p.id] || 9) * 1000;
-    anim.onload = function () { anim.onload = null; anim.classList.remove("fade"); };
+    anim.onload = function () { anim.onload = null; anim.classList.remove("fade"); hidePoster(); };
     anim.src = base + p.id + "_a.webp" + V;
     clearTimeout(timer);
     (function tick() {
@@ -658,9 +659,12 @@ h1 {
 
   // Ne montrer la video qu'une fois sa premiere image vraiment affichee (Safari annonce
   // "playing" avant d'avoir peint l'image, ce qui laissait voir un instant l'ancienne).
+  // une fois la video (ou l'image animee) affichee, on retire l'image fixe : sinon on la voit
+  // en transparence dans le fondu du bas
+  function hidePoster() { var im = $("img-" + front); if (im) setTimeout(function () { im.classList.add("fade"); }, 450); }
   function revealVideo() {
     var src = vid.currentSrc;
-    function show() { if (vid.currentSrc === src && !useAnim) vid.classList.remove("fade"); }
+    function show() { if (vid.currentSrc === src && !useAnim) { vid.classList.remove("fade"); hidePoster(); } }
     if (vid.requestVideoFrameCallback) vid.requestVideoFrameCallback(function () { vid.requestVideoFrameCallback(function () { show(); }); });
     else {
       var on = function () { if (vid.currentTime > 0.04) { vid.removeEventListener("timeupdate", on); show(); } };
